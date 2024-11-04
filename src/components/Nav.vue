@@ -24,13 +24,14 @@ const login = async () => {
 
         if (useUsuario.estatus === 200) {
             console.log(response);
-            router.push('/home')
+            irInicioAdmin();
+
         } else if (useUsuario.estatus === 400 || useUsuario.estatus === 401) {
             notificacionVisible.value = true;
             validacion.value = 'Usuario o contraseña incorrectos';
             setTimeout(() => {
                 notificacionVisible.value = false;
-            }, 9000);
+            }, 4000);
             return;
         }
     } catch (error) {
@@ -45,6 +46,11 @@ const login = async () => {
         loading.value = false;
     }
 };
+//Routes cliente
+
+function irInicio() {
+    router.push('/home')
+}
 
 function irNosotros() {
     router.push('/nosotros')
@@ -56,6 +62,10 @@ function irMenu() {
 
 function irReserva() {
     router.push('/reserva')
+}
+
+function irGaleria() {
+    router.push('/galeria')
 }
 
 function irRecorrido() {
@@ -70,14 +80,51 @@ function irContactenos() {
     router.push('/contactenos')
 }
 
+
+//Routes Panel-Admin
+
+function irInicioAdmin() {
+    router.push('/panel-admin')
+}
+
+function irMenuAdmin() {
+    router.push('/menu-admin')
+}
+
+function irReservacionAdmin() {
+    router.push('/reservacion-admin')
+}
+
+function irGaleriaAdmin() {
+    router.push('/galeria-admin')
+}
+
+function irTrabajaConNosotrosAdmin() {
+    router.push('trabaja-nosotros-admin')
+}
+
+function irContactenosAdmin() {
+    router.push('/contactenos-admin')
+}
+
+function editarPerfil() {
+    router.push('/editar-perfil-admin')
+}
+
+// Función para cerrar sesión
+const logout = () => {
+    useUsuario.token = ''; // Eliminar el token
+    router.push('/home');   // Redirigir al usuario a la página de inicio de sesión
+};
+
 </script>
 
 <template>
     <div class="app-container">
         <!-- Navegación superior -->
-        <nav class="navbar navbar-expand-lg" style="background-color: #fe6f61;">
+        <nav v-if="!useUsuario.token" class="navbar navbar-expand-lg" style="background-color: #fe6f61;">
             <div class="container-fluid" style="text-align: end;">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" @click="irInicio()" style="cursor: pointer;">
                     <img :src="LogoSinFondo" alt="Restaurante JuanMar">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -88,8 +135,8 @@ function irContactenos() {
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="nav justify-content-end me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" style="color: #fdfefe; font-weight: bold;" aria-current="page"
-                                href="inicio.html">Inicio</a>
+                            <a class="nav-link active" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
+                                aria-current="page" @click="irInicio()">Inicio</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
@@ -105,7 +152,7 @@ function irContactenos() {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
-                                href="galeria.html">Galeria</a>
+                                @click="irGaleria()">Galeria</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
@@ -123,11 +170,11 @@ function irContactenos() {
                     <form d-flex>
                         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#IngresarUser"
                             style="background-color: #734a4a; color: #fdfefe ; font-weight: bold;">
-                            <i class="bi bi-box-arrow-right"></i>Ingresar
+                            <i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i>Ingresar
                         </button>
                         <!-- Modales para Ingresar y Recuperar Contraseña -->
-                        <div class="modal fade" id="IngresarUser" data-bs-backdrop="static" data-bs-keyboard="false"
-                            tabindex="-1" role="dialog" aria-labelledby="IngresoUser" aria-hidden="true">
+                        <div class="modal fade" id="IngresarUser" data-bs-keyboard="false" tabindex="-1" role="dialog"
+                            aria-labelledby="IngresoUser" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header" style="background-color: #fe6f61;">
@@ -144,7 +191,7 @@ function irContactenos() {
                                                 <label for="nombreUsuario"
                                                     class="form-label d-flex justify-content-start"
                                                     style="color: #734a4a; font-size: smaller; font-weight: bold;">Usuario:</label>
-                                                <input type="text" class="form-control" id="nombreUsuario"
+                                                <input type="number" class="form-control" id="nombreUsuario"
                                                     v-model="cedula" maxlength="20" required>
                                             </div>
                                             <div class="form-group mb-3">
@@ -155,12 +202,15 @@ function irContactenos() {
                                             </div>
                                             <a data-bs-toggle="modal" data-bs-target="#RecuperarContraseña"
                                                 style="font-size: small; color: #734a4a; font-weight: bold; text-decoration: none;"
-                                                href="#">Recuperar Contraseña</a>
+                                                href="#">Recuperar
+                                                Contraseña</a>
+                                            <div class="modal-footer" style="background-color: #fe6f61;">
+                                                <button type="submit" class="btn"
+                                                    style="background-color: #734a4a; color: #fdfefe; font-weight: bold;">
+                                                    Ingresar
+                                                </button>
+                                            </div>
                                         </form>
-                                    </div>
-                                    <div class="modal-footer" style="background-color: #fe6f61;">
-                                        <button type="submit" class="btn"
-                                            style="background-color: #734a4a; color: #fdfefe; font-weight: bold;">Ingresar</button>
                                     </div>
                                 </div>
                             </div>
@@ -208,6 +258,73 @@ function irContactenos() {
             </div>
         </nav>
 
+        <nav v-if="useUsuario.token" class="navbar navbar-expand-lg" style="background-color: #fe6f61;">
+            <div class="container-fluid" style="text-align: end;">
+                <a class="navbar-brand" @click="irInicioAdmin()" style="cursor: pointer;"><img :src="LogoSinFondo"
+                        alt="Restaurante JuanMar"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
+                                aria-current="page" @click="irInicioAdmin()">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
+                                @click="irMenuAdmin()">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
+                                @click="irReservacionAdmin()">Reserva</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
+                                @click="irGaleriaAdmin()">Galeria</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
+                                @click="irTrabajaConNosotrosAdmin()">Trabaja con Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
+                                @click="irContactenosAdmin()">Contactenos</a>
+                        </li>
+                    </ul>
+                    <!--icono user-->
+                    <i style="color: #fdfefe ; font-size: 40px; margin-right: 20px; cursor: pointer;"
+                        class="bi bi-person-circle" aria-controls="User" data-bs-toggle="offcanvas"
+                        data-bs-target="#User"></i>
+                </div>
+            </div>
+        </nav>
+
+        <div v-if="useUsuario.token" class="offcanvas offcanvas-end" tabindex="-1" id="User"
+            aria-labelledby="offcanvasExampleLabel" style="background-color: #facac5;">
+            <section style="background-color: #fe6f61;">
+                <div class="offcanvas-header">
+                    <h4 class="offcanvas-title" id="offcanvasExampleLabel">Usuario</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+            </section>
+            <section style="background-color: #facac5;">
+                <div class="offcanvas-body">
+                    <p><a style="color: #734a4a; font-weight: bold; text-align: left; text-decoration: none; cursor: pointer;"
+                            @click="editarPerfil()" data-bs-dismiss="offcanvas">Editar Perfil</a></p>
+                </div>
+            </section>
+            <section style="background-color: #fe6f61;">
+                <div class="offcanvas-footer">
+                    <button type="button" class="btn" style="color: #fdfefe; font-weight: bold;" @click="logout"
+                        data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-box-arrow-right"></i> Cerrar
+                        Seción</button>
+                </div>
+            </section>
+        </div>
+
         <!-- Contenedor de contenido principal -->
         <main class="content">
             <router-view></router-view>
@@ -219,7 +336,7 @@ function irContactenos() {
         </div>
 
         <!-- Footer fijo en la parte inferior de la pantalla -->
-        <footer class="footer text-center text-lg-start">
+        <footer v-if="!useUsuario.token" class="footer text-center text-lg-start">
             <div class="container p-3">
                 <div class="row">
                     <div class="col-lg-4 col-md-12 d-flex justify-content-center align-items-center mb-md-0">

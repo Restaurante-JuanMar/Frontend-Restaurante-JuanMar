@@ -3,7 +3,7 @@ import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-const modelo = "administrador";
+const modelo = "admin";
 
 
 export const useStoreUsuarios = defineStore(
@@ -58,8 +58,8 @@ export const useStoreUsuarios = defineStore(
       try {
         const response = await axios.post(`${modelo}/login`, data);
         token.value = response.data.token;
-        usuario.value = response.data.admin;
-        id.value = response.data.admin._id;
+        usuario.value = response.data.administrador;
+        id.value = response.data.administrador._id;
         estatus.value = response.status;
         return response;
       } catch (error) {
