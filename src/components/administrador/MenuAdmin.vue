@@ -227,7 +227,7 @@ watch(posicion, (newValue) => {
                         <input class="form-control" type="file" id="ImagenMenu" @change="subirFotoMenu" accept="image/*"
                             style="border: 1px solid #734a4a; color:#734a4a;" aria-describedby="NotaExtensionImg"
                             required>
-                        <span id="NotaExtensionImg" style="font-weight: bold; color:#734a4a; font-size:small">El archivo
+                        <span id="NotaExtensionImg" style="font-weight: bold; color:#734a4a; font-size:small">La imagen
                             debe pesar como máximo 10MB</span>
                     </div>
                     <div class="mt-2 mb-3">
