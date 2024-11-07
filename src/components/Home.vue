@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useStoreUsuarios } from '../stores/usuario.js';
+import { useRouter } from 'vue-router';
 import Restaurante1 from '../assets/JUANMAR_RESTAURANTE-10-1.png';
 import Restaurante2 from '../assets/JUANMAR_RESTAURANTE-12-1.png';
 import Restaurante3 from '../assets/JUANMAR_RESTAURANTE-3-1.png';
@@ -26,7 +28,14 @@ import PastasClasico from '../assets/Platos/pastas_clasico.png';
 import Mojarra from '../assets/Platos/pescado_mojarra.png';
 import PuertoMar from '../assets/Platos/puerto_mar.png';
 
+const useUsuario = useStoreUsuarios();
+const router = useRouter();
 
+onMounted(()=>{
+    if(useUsuario.token){
+        router.push('/panel-admin')
+    }
+})
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useStoreGaleria } from '../stores/galeria';
+import { useStoreGaleria } from '../stores/galeria.js';
 import EquipoTrabajo from '../assets/Restaurante/equipo_trabajo.jpg';
 import Fachada from '../assets/Restaurante/fachada.jpg';
 import Ingreso from '../assets/Restaurante/ingreso.jpg';
@@ -50,6 +50,14 @@ function mostrarImagenEnModal(galeria) {
     modal.show();
 }
 
+function mostrarImagen(url, nombre) {
+    imagenSeleccionada.value = url;  // Establece la URL de la imagen seleccionada
+    eventoSeleccionado.value = nombre;  // Establece el nombre o título de la imagen
+    const modal = new bootstrap.Modal(document.getElementById('modalImagen'));
+    modal.show();  // Muestra el modal con la imagen
+}
+
+
 onMounted(() => {
     getGaleria();
 })
@@ -68,78 +76,112 @@ onMounted(() => {
                 <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3 mb-sm-0">
                     <div class="card card-degradado rounded-4">
                         <img :src="EquipoTrabajo" class="img-fluid rounded-4"
-                            style=" border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+                            style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Equipo de Trabajo"
+                            @click="mostrarImagen(EquipoTrabajo, 'Equipo de Trabajo')">
                     </div>
                 </div>
             </div>
             <!--Galeria del restaurante-->
             <h4 class="mb-2 mt-3" style="color: #734a4a; font-weight: bold;">Restaurante</h4>
             <div class="row align-items-start">
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3 mb-sm-0">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Fachada" class="img-fluid rounded-4"
-                            style=" border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+                <div class="row align-items-start">
+                    <!-- Fachada -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3 mb-sm-0">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Fachada" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Fachada"
+                                @click="mostrarImagen(Fachada, 'Fachada')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Ingreso" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+
+                    <!-- Ingreso -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Ingreso" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Ingreso"
+                                @click="mostrarImagen(Ingreso, 'Ingreso')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Salon1" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+
+                    <!-- Salon1 -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Salon1" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 1"
+                                @click="mostrarImagen(Salon1, 'Salón 1')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Salon2" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+
+                    <!-- Salon2 -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Salon2" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 2"
+                                @click="mostrarImagen(Salon2, 'Salón 2')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Recepcion" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+
+                    <!-- Recepcion -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Recepcion" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Recepción"
+                                @click="mostrarImagen(Recepcion, 'Recepción')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Salon3" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+
+                    <!-- Salon3 -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Salon3" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 3"
+                                @click="mostrarImagen(Salon3, 'Salón 3')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Patio" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+
+                    <!-- Patio -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Patio" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Patio"
+                                @click="mostrarImagen(Patio, 'Patio')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Patio2" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a; height: 310px;"
-                            alt="Restaurante JuanMar">
+
+                    <!-- Patio2 -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Patio2" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; height: 310px; cursor: pointer;"
+                                alt="Patio 2" @click="mostrarImagen(Patio2, 'Patio 2')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Salon41" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+
+                    <!-- Salon41 -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Salon41" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 4.1"
+                                @click="mostrarImagen(Salon41, 'Salón 4')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Salon42" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+
+                    <!-- Salon42 -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Salon42" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 4.2"
+                                @click="mostrarImagen(Salon42, 'Salón 4.1')">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                    <div class="card card-degradado rounded-4">
-                        <img :src="Salon5" class="img-fluid rounded-4"
-                            style="border-style: solid; border-color: #734a4a;" alt="Restaurante JuanMar">
+
+                    <!-- Salon5 -->
+                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                        <div class="card card-degradado rounded-4">
+                            <img :src="Salon5" class="img-fluid rounded-4"
+                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 5"
+                                @click="mostrarImagen(Salon5, 'Salón 5')">
+                        </div>
                     </div>
                 </div>
             </div>

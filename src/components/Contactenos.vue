@@ -1,5 +1,90 @@
 <script setup>
 import { ref } from 'vue';
+import { useStoreContactar } from '../stores/contactenos.js';
+
+const useContactenos = useStoreContactar();
+const nombre = ref('');
+const apellido = ref('');
+const correo = ref('');
+const telefono = ref('');
+const mensaje = ref('');
+const guardando = ref(false);
+const notificacionCargando = ref(false);
+const notificacionVisible = ref(false);
+const notificacionValidacion = ref(false);
+const mensajeCargando = ref('');
+const mensajeValidacion = ref('');
+const mensajeNotificacion = ref('');
+const data = ref({
+    nombre: '',
+    apellido: '',
+    correo: '',
+    telefono: '',
+    mensaje: '',
+});
+
+async function guardarSolicitud() {
+    guardando.value = true;
+
+    data.value.nombre = nombre.value
+    data.value.apellido = apellido.value
+    data.value.correo = correo.value
+    data.value.telefono = telefono.value
+    data.value.mensaje = mensaje.value
+
+    try {
+        // Llamada a la API para crear o actualizar el menú con los datos actuales
+        const response = await useContactenos.crearSolicitud(data.value);
+
+        if (useContactenos.estatus === 200) {
+            notificacionCargando.value = false;
+            mensajeCargando.value = '';
+            notificacionVisible.value = true;
+            mensajeNotificacion.value = 'Solicitud enviada exitosamente, pronto nos estaremos comunicando';
+
+            // Limpiar la imagen del array después de una actualización exitosa
+            limpiar();
+            setTimeout(() => {
+                notificacionVisible.value = false;
+                mensajeNotificacion.value = '';
+            }, 3000);
+        } else if (useContactenos.estatus === 400) {
+            notificacionCargando.value = false;
+            mensajeCargando.value = '';
+            notificacionValidacion.value = true;
+            mensajeValidacion.value = useContactenos.validacion;
+            setTimeout(() => {
+                notificacionValidacion.value = false;
+                mensajeValidacion.value = '';
+            }, 3000);
+        }
+    } catch (error) {
+        notificacionValidacion.value = true;
+        mensajeValidacion.value = useContactenos.validacion;
+
+        setTimeout(() => {
+            notificacionValidacion.value = false;
+            mensajeValidacion.value = '';
+        }, 3000);
+        console.log(error);
+    } finally {
+        guardando.value = false;
+    }
+}
+
+function limpiar() {
+    nombre.value = '';
+    apellido.value = '';
+    correo.value = ''
+    telefono.value = '';
+    mensaje.value = '';
+    data.value.nombre = '';
+    data.value.apellido = '';
+    data.value.correo = '';
+    data.value.telefono = '';
+    data.value.mensaje = '';
+}
+
 </script>
 
 <template>
@@ -20,50 +105,47 @@ import { ref } from 'vue';
                         enfoque
                         diferente, no dudes en decírmelo.</p>
                 </div>
-                <form class="rows needs-validation" novalidate id="formularioContactenos">
+                <form class="rows needs-validation" novalidate id="formularioContactenos"
+                    @submit.prevent="guardarSolicitud">
                     <div class="mb-3">
                         <label for="exampleInputNombre" style="font-weight: bold; color: #734a4a;"
                             class="form-label">Nombres</label>
-                        <input type="text" class="form-control" id="exampleInputNombre" style="border-color: #734a4a"
-                            required>
-                        <div class="invalid-feedback">Digite el nombre</div>
+                        <input type="text" class="form-control" v-model="nombre" id="exampleInputNombre"
+                            style="border-color: #734a4a" placeholder="Digite su nombre" required>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputApellidos" style="font-weight: bold; color: #734a4a;"
                             class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" id="exampleInputApellidos" style="border-color: #734a4a"
-                            required>
-                        <div class="invalid-feedback">Digite los apellidos</div>
+                        <input type="text" class="form-control" v-model="apellido" id="exampleInputApellidos"
+                            style="border-color: #734a4a" placeholder="Digite sus apellidos" required>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail" style="font-weight: bold; color: #734a4a;"
                             class="form-label">Correo electronico</label>
-                        <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
-                            style="border-color: #734a4a" placeholder="email@gmail.com" required>
-                        <div class="invalid-feedback">Digite el correo electronico</div>
+                        <input type="email" class="form-control" v-model="correo" id="exampleInputEmail"
+                            aria-describedby="emailHelp" style="border-color: #734a4a"
+                            placeholder="Digite su correo electrónico, ej (correo@gmail.com)" required>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputTelefono" style="font-weight: bold; color: #734a4a;"
                             class="form-label">Telefono</label>
-                        <input type="number" class="form-control" id="exampleInputTelefono"
-                            style="border-color: #734a4a" required>
-                        <div class="invalid-feedback">Digite el numero telefonico</div>
+                        <input type="number" class="form-control" v-model="telefono" id="exampleInputTelefono"
+                            style="border-color: #734a4a" placeholder="Digite su número telefónico" required>
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlDescripcion" style="font-weight: bold; color: #734a4a;"
                             class="form-label">Comentario</label>
-                        <textarea class="form-control" id="exampleFormControlDescripcion" rows="3"
-                            style="border-color: #734a4a" required></textarea>
-                        <div class="invalid-feedback">Realice un comentario</div>
+                        <textarea class="form-control" id="exampleFormControlDescripcion" v-model="mensaje" rows="3"
+                            style="border-color: #734a4a" placeholder="Realice un comentario (opcional)"
+                            required></textarea>
                     </div>
-                    <div style="display: flex; gap: 10px;">
+                    <div style="display: flex; gap: 10px; justify-content: center;">
                         <div>
                             <button type="submit" class="btn mb-5"
-                                style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;">Enviar</button>
-                        </div>
-                        <div>
-                            <button type="button" class="btn mb-5"
-                                style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;">Cancelar</button>
+                                style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;"
+                                :disabled="guardando"> <span v-if="guardando" class="spinner-border spinner-border-sm"
+                                    role="status" aria-hidden="true"></span>
+                                <span v-if="!guardando">Enviar</span></button>
                         </div>
                     </div>
                 </form>
@@ -189,7 +271,40 @@ import { ref } from 'vue';
                 </form>
             </div>
         </div>
+
+        <div v-if="notificacionVisible" class="custom-notify alert alert-success alert-dismissible fade show"
+            role="alert">
+            {{ mensajeNotificacion }}
+        </div>
+        <div v-if="notificacionValidacion" class="custom-notify alert alert-danger alert-dismissible fade show"
+            role="alert">
+            {{ mensajeValidacion }}
+        </div>
+        <div v-if="notificacionCargando" class="custom-notify alert alert-info alert-dismissible fade show"
+            role="alert">
+            {{ mensajeCargando }}
+        </div>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.custom-notify {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 300px;
+    text-align: center;
+    padding: 15px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+}
+
+.custom-notify .close:hover {
+    opacity: 1;
+}
+</style>

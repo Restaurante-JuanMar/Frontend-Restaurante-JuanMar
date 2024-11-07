@@ -30,8 +30,32 @@ const data = ref({
     imagen: []
 });
 
+function cargarDatosGaleria(galeria) {
+    nombre.value = galeria.nombre_gal;
+    descripcion.value = galeria.descrip_gal;
+    fecha.value = formatFechaISO(galeria.fecha_gal)
+    posicion.value = galeria.posicion;
+
+    if (galeria.imagen && galeria.imagen.length > 0) {
+        data.value.imagen = [{ url: galeria.imagen[0].url }];
+    } else {
+        data.value.imagen = [];
+    }
+}
 
 async function guardarCambios() {
+    if (data.value.imagen.length === 0) {
+        notificacionValidacion.value = true;
+        mensajeValidacion.value = 'Por favor, sube una imagen antes de guardar los cambios';
+
+        setTimeout(() => {
+            notificacionValidacion.value = false;
+            mensajeValidacion.value = '';
+        }, 3000);
+        return;
+    }
+
+
     guardando.value = true;
 
     console.log("data antes", data)
@@ -54,6 +78,7 @@ async function guardarCambios() {
 
 
             data.value.imagen = [];
+            getGaleria();
             limpiar();
 
             setTimeout(() => {
@@ -151,6 +176,10 @@ function formatFecha(fechaISO) {
     return `${day}/${month}/${year}`;
 }
 
+function formatFechaISO(isoDate) {
+    return isoDate.split('T')[0];
+}
+
 function filtrarFecha() {
     const normalizedFilter = filter.value.toLowerCase();
     galeriasFiltradas.value = galerias.value.filter(galeria => {
@@ -240,9 +269,9 @@ onMounted(() => {
                         <label for="ImagenMenu" class="form-label"
                             style="border: #734a4a; color:#734a4a; font-weight:bold">Cargue la Imagen</label>
                         <input class="form-control" type="file" id="ImagenMenu" @change="subirFotoGaleria"
-                            accept="image/*" style="border: 1px solid #734a4a; color:#734a4a;" required>
-                            <span id="NotaExtensionImg" style="font-weight: bold; color:#734a4a; font-size:small">La imagen
-                                debe pesar como máximo 10MB</span>
+                            accept="image/*" style="border: 1px solid #734a4a; color:#734a4a;">
+                        <span id="NotaExtensionImg" style="font-weight: bold; color:#734a4a; font-size:small">La imagen
+                            debe pesar como máximo 10MB</span>
                     </div>
                     <div class="mt-2 mb-3">
                         <button type="submit" class="btn"
@@ -255,7 +284,8 @@ onMounted(() => {
                 <div class="input-group mt-5 mb-3">
                     <input type="text" class="form-control" placeholder="Buscar por fecha (dd/mm/aaaa)" v-model="filter"
                         aria-label="Buscar" style="border: 1px solid #734a4a; color:#734a4a;">
-                    <button type="button" class="input-group-text" style="background-color: #734a4a; color: #fdfefe;" @click="filtrarFecha()">
+                    <button type="button" class="input-group-text" style="background-color: #734a4a; color: #fdfefe;"
+                        @click="filtrarFecha()">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
@@ -277,7 +307,8 @@ onMounted(() => {
 
                             <td class="descripcion">
                                 <VMenu class="vmenu">
-                                    <span class="descripcion"  style="color: #734a4a;">{{ galeria.descrip_gal.slice(0, 30) }} ...</span>
+                                    <span class="descripcion" style="color: #734a4a;">{{ galeria.descrip_gal.slice(0,
+                                        30) }} ...</span>
                                     <template #popper>
                                         <div class="descripVmenu">{{ galeria.descrip_gal }}</div>
                                     </template>
@@ -289,7 +320,7 @@ onMounted(() => {
                                     style="cursor: pointer;" @click="mostrarImagenEnModal(galeria)">
                             </td>
                             <td>
-                                <button type="button" id="aceptar" class="btn"
+                                <button type="button" id="aceptar" class="btn" @click="cargarDatosGaleria(galeria)"
                                     style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;"><i
                                         class="bi bi-pencil-square"></i></button>
                             </td>
@@ -313,6 +344,7 @@ onMounted(() => {
                 </div>
             </div>
         </div>
+        
 
         <div v-if="notificacionVisible" class="custom-notify alert alert-success alert-dismissible fade show"
             role="alert">
