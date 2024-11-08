@@ -50,7 +50,7 @@ const login = async () => {
     }
 };
 
-function limpiar(){
+function limpiar() {
     cedula.value = '';
     contrasena.value = '';
 }
@@ -182,45 +182,54 @@ const logout = () => {
                         </button>
 
                         <!-- Modales para Ingresar y Recuperar Contraseña -->
-<!-- Capa de fondo opaco -->
-<div v-if="mostrarModalLogin" class="modal-backdrop fade show"></div>
+                        <!-- Capa de fondo opaco -->
+                        <div v-if="mostrarModalLogin" class="modal-backdrop fade show"></div>
 
-<!-- Modal de inicio de sesión -->
-<div v-if="mostrarModalLogin" class="modal fade show" id="IngresarUser" tabindex="-1" style="display: block;"
-     aria-labelledby="IngresoUser" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #fe6f61;">
-                <h4 class="modal-title fs-5" id="IngresoUser" style="color: #fdfefe; font-weight: bold;">
-                    Iniciar Sesión como Administrador
-                </h4>
-                <button type="button" class="btn-close" @click="mostrarModalLogin = false" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="background-color: #facac5;">
-                <form @submit.prevent="login">
-                    <div class="form-group mb-3">
-                        <label for="nombreUsuario" class="form-label d-flex justify-content-start"
-                               style="color: #734a4a; font-size: smaller; font-weight: bold;">Usuario:</label>
-                        <input type="number" class="form-control" id="nombreUsuario" v-model="cedula" maxlength="20" required>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="Contraseña" class="form-label d-flex justify-content-start"
-                               style="color: #734a4a; font-size: smaller; font-weight: bold;">Contraseña:</label>
-                        <input type="password" class="form-control" id="Contraseña" v-model="contrasena" maxlength="20" required>
-                    </div>
-                    <a data-bs-toggle="modal" data-bs-target="#RecuperarContraseña"
-                       style="font-size: small; color: #734a4a; font-weight: bold; text-decoration: none;" href="#">Recuperar Contraseña</a>
-                    <div class="modal-footer" style="background-color: #fe6f61;">
-                        <button type="submit" class="btn"
-                                style="background-color: #734a4a; color: #fdfefe; font-weight: bold;">
-                            Ingresar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+                        <!-- Modal de inicio de sesión -->
+                        <div v-if="mostrarModalLogin" class="modal fade show" id="IngresarUser" tabindex="-1"
+                            style="display: block;" aria-labelledby="IngresoUser" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background-color: #fe6f61;">
+                                        <h4 class="modal-title fs-5" id="IngresoUser"
+                                            style="color: #fdfefe; font-weight: bold;">
+                                            Iniciar Sesión como Administrador
+                                        </h4>
+                                        <button type="button" class="btn-close" @click="mostrarModalLogin = false"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" style="background-color: #facac5;">
+                                        <form @submit.prevent="login">
+                                            <div class="form-group mb-3">
+                                                <label for="nombreUsuario"
+                                                    class="form-label d-flex justify-content-start"
+                                                    style="color: #734a4a; font-size: smaller; font-weight: bold;">Usuario:</label>
+                                                <input type="number" class="form-control" id="nombreUsuario"
+                                                    v-model="cedula" maxlength="20" required>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="Contraseña" class="form-label d-flex justify-content-start"
+                                                    style="color: #734a4a; font-size: smaller; font-weight: bold;">Contraseña:</label>
+                                                <input type="password" class="form-control" id="Contraseña"
+                                                    v-model="contrasena" maxlength="20" required>
+                                            </div>
+                                            <a data-bs-toggle="modal" data-bs-target="#RecuperarContraseña"
+                                                style="font-size: small; color: #734a4a; font-weight: bold; text-decoration: none;"
+                                                href="#">Recuperar Contraseña</a>
+                                            <div class="modal-footer" style="background-color: #fe6f61;">
+                                                <button type="submit" class="btn"
+                                                    style="background-color: #734a4a; color: #fdfefe; font-weight: bold;" :disabled="loading">
+                                                    <span v-if="loading"
+                                                        class="spinner-border spinner-border-sm" role="status"
+                                                        aria-hidden="true"></span>
+                                                    <span v-if="!loading">Ingresar</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
                         <div class="modal fade" id="RecuperarContraseña" data-bs-backdrop="static"
@@ -422,8 +431,9 @@ const logout = () => {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 1); /* Ajusta la opacidad aquí si es necesario */
-    z-index: 1040; /* Un nivel inferior que el modal para estar detrás */
+    background-color: rgba(0, 0, 0, 1);
+    /* Ajusta la opacidad aquí si es necesario */
+    z-index: 1040;
+    /* Un nivel inferior que el modal para estar detrás */
 }
-
 </style>

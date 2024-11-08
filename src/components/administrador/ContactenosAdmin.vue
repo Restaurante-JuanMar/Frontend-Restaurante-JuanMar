@@ -8,7 +8,7 @@ const solicitudesFiltradas = ref([]);
 const loading = ref(false);
 const filter = ref('');
 const solicitudSeleccionada = ref(null);
-const limit = ref(1);
+const limit = ref(5);
 
 async function getSolicitud() {
     loading.value = true;
