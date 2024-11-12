@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useStoreUsuarios } from '../stores/usuario.js';
 import { useRouter } from 'vue-router';
+import { useStorePlatosEspeciales } from '../stores/plato_especial.js';
 import Restaurante1 from '../assets/JUANMAR_RESTAURANTE-10-1.png';
 import Restaurante2 from '../assets/JUANMAR_RESTAURANTE-12-1.png';
 import Restaurante3 from '../assets/JUANMAR_RESTAURANTE-3-1.png';
@@ -31,13 +32,91 @@ import VideoRestaurante from '../assets/videos/video_restaurante.mp4';
 
 
 const useUsuario = useStoreUsuarios();
+const usePlatoEspecial = useStorePlatosEspeciales();
+const platoEspecial = ref([]);
+const loading = ref(false);
+const mostrarModalEspecial = ref(false);
 const router = useRouter();
+
+async function getPlatoEspecial() {
+    loading.value = true;
+    try {
+        const response = await usePlatoEspecial.getAll();
+        if (usePlatoEspecial.estatus === 200) {
+            platoEspecial.value = response.filter(pe => pe.estado === true)
+
+            if (platoEspecial.value.length > 0) {
+                mostrarModalPlatoEspecial();
+            }
+        }
+        console.log("platos especiales", platoEspecial);
+    } catch (error) {
+        console.log(error);
+    } finally {
+        loading.value = false;
+    }
+}
+
+function mostrarModalPlatoEspecial() {
+    mostrarModalEspecial.value = true;
+}
+
+function formatearDescripcion(texto) {
+    // Si el texto es undefined o null, devolvemos una cadena vacía.
+    return texto ? texto.replace(/\n/g, '<br>') : '';
+}
+
+function irReserva() {
+    mostrarModalEspecial.value = false;
+    router.push('/reserva')
+}
+// Función para cerrar el modal
+function closeModal(event) {
+    // Cerrar si el evento es un clic fuera del contenido o si se presiona 'Esc'
+    if (event.key === 'Escape' || event.target.classList.contains('modal-backdrop')) {
+        mostrarModalEspecial.value = false;
+    }
+}
 
 onMounted(() => {
     if (useUsuario.token) {
-        router.push('/panel-admin')
+        router.push('/panel-admin');
     }
-})
+    getPlatoEspecial();
+});
+
+// Observar cambios en mostrarModalEspecial y agregar evento de clic cuando el modal sea visible
+watch(mostrarModalEspecial, async (newVal) => {
+    if (newVal) {
+        // Esperar hasta que el DOM se haya actualizado completamente
+        await nextTick();
+
+        // Agregar el evento de clic al backdrop
+        const backdrop = document.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.addEventListener('click', closeModal);
+        }
+
+        // Escuchar la tecla 'Escape' para cerrar el modal
+        window.addEventListener('keydown', closeModal);
+    } else {
+        // Eliminar el evento de clic y la tecla 'Escape' cuando el modal se cierra
+        const backdrop = document.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.removeEventListener('click', closeModal);
+        }
+        window.removeEventListener('keydown', closeModal);
+    }
+});
+
+// Limpiar eventos cuando el componente se desmonte
+onBeforeUnmount(() => {
+    window.removeEventListener('keydown', closeModal);
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.removeEventListener('click', closeModal);
+    }
+});
 </script>
 
 <template>
@@ -123,13 +202,8 @@ onMounted(() => {
                 </div>
             </section>
             <section id="promocionar" style="background-color: #fae1de;">
-                <div class="container d-flex justify-content-center align-items-center">
-                    <img :src="Aniversario" class="mt-3 mb-3" style="border-color: #734a4a; border-style: 3 solid;"
-                        alt="evento promocional">
-                </div>
-
                 <div class="d-flex justify-content-center" style="margin-bottom: 20px;">
-                    <video controls class="img-fluid" width="50%">
+                    <video controls class="img-fluid m-4" width="50%">
                         <source :src="VideoRestaurante" type="video/mp4">
                     </video>
                 </div>
@@ -237,7 +311,50 @@ onMounted(() => {
                 </div>
             </section>
         </div>
+        <div v-if="mostrarModalEspecial" class="modal-backdrop fade show"></div>
+
+        <div v-if="mostrarModalEspecial && platoEspecial.length > 0" class="modal fade show" id="modalPlatoEspecial"
+            tabindex="-1" aria-labelledby="modalPlatoEspecialLabel" aria-hidden="true" style="display: block;">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header"
+                        style="display: flex; justify-content: center; background-color: #fe6f61;">
+                        <h5 class="modal-title text-uppercase fw-bold " id="modalPlatoEspecialLabel"
+                            style="color: white;">Ven y disfruta de nuestro plato especial de temporada!
+                        </h5>
+                        <button class="btn-close" @click="mostrarModalEspecial = false"></button>
+                    </div>
+                    <div class="modal-body d-flex">
+                        <!-- Imagen del Plato Especial -->
+                        <div class="col-md-6" style="display: flex; align-items: center; max-height: 100vh">
+                            <img :src="platoEspecial[0].imagen" class="img-fluid" alt="Imagen del Plato Especial"
+                                style="border-radius: 10px; max-height: 80vh;">
+                        </div>
+                        <!-- Información del Plato Especial -->
+                        <div class="col-md-6 d-flex flex-column justify-content-center p-4">
+                            <h5 class="modal-title text-uppercase fw-bold" id="modalPlatoEspecialLabel"
+                                style="color: #734a4a;">{{ platoEspecial[0].nombre_plat }}
+                            </h5>
+                            <p v-html="formatearDescripcion(platoEspecial[0].descrip_plat)"></p>
+                            <button type="button" class="btn"
+                                style="background-color: #734a4a; color: #fdfefe; font-weight: bold;"
+                                @click="irReserva()">Reservar Ahora</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 1040;
+}
+</style>

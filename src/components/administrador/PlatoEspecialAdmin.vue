@@ -20,11 +20,11 @@ const imagenSeleccionada = ref();
 const data = ref({
     nombre_plat: '',
     descrip_plat: '',
-    imagen: [],
+    imagen: '',
 });
 
 async function guardarCambios() {
-    if (!data.value.imagen || data.value.imagen.length === 0) {
+    if (!data.value.imagen) {
         mensajeValidacion.value = 'Debe subir al menos una imagen';
         notificacionValidacion.value = true;
         setTimeout(() => {
@@ -38,34 +38,50 @@ async function guardarCambios() {
     data.value.descrip_plat = descripcion.value;
 
     try {
-        // Llamada a la API para crear o actualizar el menú con los datos actuales
-        const response = await usePlatoEspecial.crearPlato(data.value);
+        let response;
+
+        // Verificamos si estamos en modo edición o creación
+        if (usePlatoEspecial.idPlatoEspecial) {
+            // Modo edición
+            response = await usePlatoEspecial.editarPlato(usePlatoEspecial.idPlatoEspecial, data.value);
+            mensajeNotificacion.value = 'Plato especial modificado exitosamente';
+        } else {
+            // Modo creación
+            response = await usePlatoEspecial.crearPlato(data.value);
+            mensajeNotificacion.value = 'Plato especial creado exitosamente';
+        }
 
         if (usePlatoEspecial.estatus === 200) {
             notificacionVisible.value = true;
-            mensajeNotificacion.value = 'Plato especial modificado exitosamente';
 
-            data.value.imagen = [];
+            // Limpiar el formulario y recargar los datos
             limpiar();
             getPlatosEspeciales();
+            usePlatoEspecial.idPlatoEspecial = '';  // Reiniciamos el ID para futuras creaciones
 
             setTimeout(() => {
                 notificacionVisible.value = false;
             }, 3000);
         } else if (usePlatoEspecial.estatus === 400) {
+            // Mostramos un mensaje de validación en caso de error 400
             notificacionValidacion.value = true;
             mensajeValidacion.value = usePlatoEspecial.validacion;
-
             setTimeout(() => {
                 notificacionValidacion.value = false;
             }, 3000);
         }
     } catch (error) {
-        console.log(error);
+        console.error("Error al guardar el plato especial:", error);
+        mensajeValidacion.value = "Error al guardar los cambios";
+        notificacionValidacion.value = true;
+        setTimeout(() => {
+            notificacionValidacion.value = false;
+        }, 3000);
     } finally {
         guardando.value = false;
     }
 }
+
 
 async function subirFotoPlatoEspecial(event) {
     const files = event.target.files;
@@ -81,11 +97,7 @@ async function subirFotoPlatoEspecial(event) {
 
         console.log("URL de la imagen subida:", imageUrl);
 
-        if (data.value.imagen.length > 0) {
-            data.value.imagen.splice(0, 1, { url: imageUrl });
-        } else {
-            data.value.imagen.push({ url: imageUrl });
-        }
+        data.value.imagen = imageUrl
 
         console.log("soy data imagen", data)
 
@@ -106,15 +118,28 @@ async function subirFotoPlatoEspecial(event) {
     }
 }
 
-function cargarDatosPE(pe) {
-    nombre.value = pe.nombre;
-    descripcion.value = pe.descripcion;
-
-    if (pe.imagen && pe.imagen.length > 0) {
-        data.value.imagen = [{ url: pe.imagen[0].url }];
-    } else {
-        data.value.imagen = [];
+async function cambiarEstadoPlatoEspecial(pe) {
+    try {
+        if (pe.estado) {
+            // Si el plato está activo, lo inactivamos
+            await usePlatoEspecial.inactivarPlato(pe._id);
+        } else {
+            // Si el plato está inactivo, lo activamos
+            await usePlatoEspecial.activarPlato(pe._id);
+        }
+        // Refrescar la lista de platos especiales después de cambiar el estado
+        getPlatosEspeciales();
+    } catch (error) {
+        console.error("Error al cambiar el estado del plato especial:", error);
     }
+}
+
+
+function cargarDatosPE(pe) {
+    nombre.value = pe.nombre_plat;
+    descripcion.value = pe.descrip_plat;
+    data.value.imagen = pe.imagen || '';
+    usePlatoEspecial.idPlatoEspecial = pe._id; // Asigna el ID del plato especial seleccionado
 }
 
 function limpiar() {
@@ -122,7 +147,10 @@ function limpiar() {
     descripcion.value = '';
     data.value.nombre_plat = '';
     data.value.descrip_plat = '';
+    data.value.imagen = '';
+    usePlatoEspecial.idPlatoEspecial = ''; // Reseteamos el ID para futuras creaciones
 }
+
 
 async function getPlatosEspeciales() {
     loading.value = true;
@@ -141,12 +169,18 @@ async function getPlatosEspeciales() {
 
 function mostrarImagenEnModal(pe) {
     platoSelecionado.value = pe.nombre_plat;
-    imagenSeleccionada.value = pe.imagen[0].url;
+    imagenSeleccionada.value = pe.imagen;
     const modal = new bootstrap.Modal(document.getElementById('modalImagen'));
     modal.show();
 }
 
-onMounted(()=>{
+onMounted(() => {
+    nombre.value = '';
+    descripcion.value = '';
+    data.value.nombre_plat = '';
+    data.value.descrip_plat = '';
+    data.value.imagen = '';
+    usePlatoEspecial.idPlatoEspecial = ''; // Reseteamos el ID para futuras creaciones
     getPlatosEspeciales();
 })
 
@@ -180,9 +214,9 @@ onMounted(()=>{
                     <div class="mb-3">
                         <label for="ImagenMenu" class="form-label"
                             style="border: #734a4a; color:#734a4a; font-weight:bold">Cargue la Imagen</label>
-                        <input class="form-control" type="file" id="ImagenMenu" @change="subirFotoPlatoEspecial" accept="image/*"
-                            style="border: 1px solid #734a4a; color:#734a4a;" aria-describedby="NotaExtensionImg"
-                            required>
+                        <input class="form-control" type="file" id="ImagenMenu" @change="subirFotoPlatoEspecial"
+                            accept="image/*" style="border: 1px solid #734a4a; color:#734a4a;"
+                            aria-describedby="NotaExtensionImg">
                         <span id="NotaExtensionImg" style="font-weight: bold; color:#734a4a; font-size:small">La imagen
                             debe pesar como máximo 10MB</span>
                     </div>
@@ -201,6 +235,7 @@ onMounted(()=>{
                             <th scope="col" style="color: #734a4a;">Nombre</th>
                             <th scope="col" style="color: #734a4a;">Descripción</th>
                             <th scope="col" style="color: #734a4a;">Imagen</th>
+                            <th scope="col" style="color: #734a4a;">Estado</th>
                             <th scope="col" style="color: #734a4a;">Editar</th>
                         </tr>
                     </thead>
@@ -219,8 +254,14 @@ onMounted(()=>{
                                 <span v-else style="color: #734a4a;">No aplica</span>
                             </td>
                             <td>
-                                <img :src="pe.imagen[0].url" width="100%" height="100px" alt="Evento especial"
-                                    style="cursor: pointer;" @click="mostrarImagenEnModal(galeria)">
+                                <img :src="pe.imagen" width="100%" height="100px" alt="Plato Especial"
+                                    style="cursor: pointer;" @click="mostrarImagenEnModal(pe)">
+                            </td>
+                            <td>
+                                <button :class="['btn', pe.estado ? 'btn-success' : 'btn-danger']"
+                                    @click="cambiarEstadoPlatoEspecial(pe)" style="margin-left: 10px; font-weight: bold;">
+                                    {{ pe.estado ? 'Activo' : 'Inactivo' }}
+                                </button>
                             </td>
                             <td>
                                 <button type="button" id="aceptar" class="btn" @click="cargarDatosPE(pe)"

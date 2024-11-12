@@ -21,6 +21,7 @@ const guardandoMision = ref(false);
 const guardandoVision = ref(false);
 const guardandoVC = ref(false);
 const loading = ref(false);
+const loadingVision = ref(false);
 const valoresCorporativos = ref([]);
 const dataMision = ref({
     descripcion: '',
@@ -155,7 +156,7 @@ async function gurdarCambiosValoresCorporativos() {
             dataValCorp.value.descripcion = '';
             nombre.value = '';
             descripcion.value = '';
-            useValCorp.idValor = ''; 
+            useValCorp.idValor = '';
             getValoresCorporativos();
 
             setTimeout(() => {
@@ -209,7 +210,7 @@ async function getMision() {
 }
 
 async function getVision() {
-    loading.value = true;
+    loadingVision.value = true;
     try {
         const response = await useVision.getAll();
         if (useVision.estatus === 200) {
@@ -219,7 +220,7 @@ async function getVision() {
     } catch (error) {
         console.log(error);
     } finally {
-        loading.value = false;
+        loadingVision.value = false;
     }
 }
 
@@ -239,6 +240,11 @@ async function getValoresCorporativos() {
 }
 
 onMounted(() => {
+    dataValCorp.value.nombre = '';
+    dataValCorp.value.descripcion = '';
+    nombre.value = '';
+    descripcion.value = '';
+    useValCorp.idValor = '';
     getMision();
     getVision();
     getValoresCorporativos();
@@ -258,9 +264,19 @@ onMounted(() => {
                     <div class="mb-3">
                         <label for="Tipoevento" style="font-weight: bold; color:#734a4a"
                             class="form-label">Misión</label>
-                        <textarea type="text" class="form-control" id="Descripcion" v-model="descripcionMision"
-                            style="border-color:#734a4a; color:#734a4a; height: 110px;"
-                            placeholder="Digite la misión  del restaurante..." required></textarea>
+                        <div class="position-relative">
+                            <textarea id="Descripcion" class="form-control" v-model="descripcionMision"
+                                placeholder="Digite la misión del restaurante..." required :disabled="loading"
+                                style="border-color:#734a4a; color:#734a4a; height: 110px;">
+                            </textarea>
+                            <!-- Spinner de carga (Bootstrap) -->
+                            <div v-if="loading" class="position-absolute top-50 start-50 translate-middle">
+                                <div class="spinner-border text-danger" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="mt-2 mb-3">
                         <button type="submit" class="btn"
@@ -277,9 +293,18 @@ onMounted(() => {
                     <div class="mb-3 mt-3">
                         <label for="Tipoevento" style="font-weight: bold; color:#734a4a"
                             class="form-label">Visión</label>
-                        <textarea type="text" class="form-control" id="Descripcion" v-model="descripcionVision"
-                            style="border-color:#734a4a; color:#734a4a; height: 110px;"
-                            placeholder="Digite la visión del restaurante..." required></textarea>
+                        <div class="position-relative">
+                            <textarea id="Descripcion" class="form-control" v-model="descripcionVision"
+                                placeholder="Digite la visiòn del restaurante..." required :disabled="loadingVision"
+                                style="border-color:#734a4a; color:#734a4a; height: 110px;">
+                            </textarea>
+                            <!-- Spinner de carga (Bootstrap) -->
+                            <div v-if="loadingVision" class="position-absolute top-50 start-50 translate-middle">
+                                <div class="spinner-border text-danger" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="mt-2 mb-3">
                         <button type="submit" class="btn"
@@ -407,5 +432,13 @@ onMounted(() => {
     height: fit-content;
     max-height: 300px;
     max-width: 300px;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
 }
 </style>

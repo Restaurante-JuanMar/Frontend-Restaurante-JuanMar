@@ -7,6 +7,7 @@ const estatus = ref("");
 const validacion = ref("");
 const platoSeleccionado = ref("");
 const idPlato = ref("");
+const idPlatoEspecial = ref("");
 
 export const useStorePlatosEspeciales = defineStore(
   modelo,
@@ -127,6 +128,7 @@ export const useStorePlatosEspeciales = defineStore(
       validacion,
       platoSeleccionado,
       idPlato,
+      idPlatoEspecial,
     };
   },
   {
