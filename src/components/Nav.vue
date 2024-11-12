@@ -119,6 +119,14 @@ function editarPerfil() {
     router.push('/editar-perfil-admin')
 }
 
+function irMisionAdmin() {
+    router.push('/mision')
+}
+
+function irPlatoEspecialAdmin() {
+    router.push('/plato-especial')
+}
+
 // Función para cerrar sesión
 const logout = () => {
     useUsuario.token = ''; // Eliminar el token
@@ -301,6 +309,14 @@ const logout = () => {
                         <li class="nav-item">
                             <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
                                 @click="irGaleriaAdmin()">Galeria</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
+                                @click="irPlatoEspecialAdmin()">Plato Especial</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"
+                                @click="irMisionAdmin()">Mision</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #fdfefe; font-weight: bold; cursor: pointer;"

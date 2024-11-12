@@ -27,12 +27,14 @@ import FileteGratinado from '../assets/Platos/filete_gratinado.png';
 import PastasClasico from '../assets/Platos/pastas_clasico.png';
 import Mojarra from '../assets/Platos/pescado_mojarra.png';
 import PuertoMar from '../assets/Platos/puerto_mar.png';
+import VideoRestaurante from '../assets/videos/video_restaurante.mp4';
+
 
 const useUsuario = useStoreUsuarios();
 const router = useRouter();
 
-onMounted(()=>{
-    if(useUsuario.token){
+onMounted(() => {
+    if (useUsuario.token) {
         router.push('/panel-admin')
     }
 })
@@ -42,7 +44,8 @@ onMounted(()=>{
     <div>
         <div>
             <section id="Carrusel">
-                <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="3000">
+                <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel"
+                    data-bs-interval="3000">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
                             aria-current="true" aria-label="Slide 1"></button>
@@ -124,7 +127,15 @@ onMounted(()=>{
                     <img :src="Aniversario" class="mt-3 mb-3" style="border-color: #734a4a; border-style: 3 solid;"
                         alt="evento promocional">
                 </div>
+
+                <div class="d-flex justify-content-center" style="margin-bottom: 20px;">
+                    <video controls class="img-fluid" width="50%">
+                        <source :src="VideoRestaurante" type="video/mp4">
+                    </video>
+                </div>
             </section>
+
+
             <div id="carouselExampleCaptions" class="carousel slide">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"

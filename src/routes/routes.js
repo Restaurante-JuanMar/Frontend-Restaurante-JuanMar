@@ -15,6 +15,8 @@ import GaleriaAdmin from "../components/administrador/GaleriaAdmin.vue";
 import TrabajaConNosotrosAdmin from "../components/administrador/TrabajaAdmin.vue";
 import ContactenosAdmin from "../components/administrador/ContactenosAdmin.vue";
 import EditarPerfil from "../components/administrador/EditarPerfil.vue";
+import Mision from '../components/administrador/Mision.vue';
+import PlatoEspecialAdmin from '../components/administrador/PlatoEspecialAdmin.vue';
 
 const routes = [
   {
@@ -77,6 +79,14 @@ const routes = [
       {
         path: "/contactenos-admin",
         component: ContactenosAdmin,
+      },
+      {
+        path: "/mision",
+        component: Mision,
+      },
+      {
+        path: "/plato-especial",
+        component: PlatoEspecialAdmin,
       },
       {
         path: "/editar-perfil-admin",
