@@ -36,6 +36,7 @@ const usePlatoEspecial = useStorePlatosEspeciales();
 const platoEspecial = ref([]);
 const loading = ref(false);
 const mostrarModalEspecial = ref(false);
+const currentPlatoIndex = ref(0); // Nuevo índice para seguimiento del plato actual
 const router = useRouter();
 
 async function getPlatoEspecial() {
@@ -78,12 +79,17 @@ function closeModal(event) {
     }
 }
 
-onMounted(() => {
-    if (useUsuario.token) {
-        router.push('/panel-admin');
-    }
-    getPlatoEspecial();
-});
+
+
+// Función para mostrar el siguiente plato especial
+function siguientePlato() {
+    currentPlatoIndex.value = (currentPlatoIndex.value + 1) % platoEspecial.value.length;
+}
+
+// Función para mostrar el plato especial anterior
+function anteriorPlato() {
+    currentPlatoIndex.value = (currentPlatoIndex.value - 1 + platoEspecial.value.length) % platoEspecial.value.length;
+}
 
 // Observar cambios en mostrarModalEspecial y agregar evento de clic cuando el modal sea visible
 watch(mostrarModalEspecial, async (newVal) => {
@@ -107,6 +113,13 @@ watch(mostrarModalEspecial, async (newVal) => {
         }
         window.removeEventListener('keydown', closeModal);
     }
+});
+
+onMounted(() => {
+    if (useUsuario.token) {
+        router.push('/panel-admin');
+    }
+    getPlatoEspecial();
 });
 
 // Limpiar eventos cuando el componente se desmonte
@@ -202,7 +215,7 @@ onBeforeUnmount(() => {
                 </div>
             </section>
             <section id="promocionar" style="background-color: #fae1de;">
-                <div class="d-flex justify-content-center" style="margin-bottom: 20px;">
+                <div class="d-flex justify-content-center">
                     <video controls class="img-fluid m-4" width="50%">
                         <source :src="VideoRestaurante" type="video/mp4">
                     </video>
@@ -305,9 +318,10 @@ onBeforeUnmount(() => {
             </div>
             <section id="localizacion" style="background-color: #fae1de;">
                 <div class="container text-center">
-                    <h4 class="mb-3" style="color: #734a4a; font-weight: bold;">Nuestra Localización</h4>
+                    <h4 class="mb-3" style="color: #734a4a; font-weight: bold; padding-top: 20px;">Nuestra Localización
+                    </h4>
                     <iframe src="https://www.google.com/maps/d/embed?mid=1hYq40YbNc_hBAuk_XKM_4a6vlOpxL0Y&ehbc=2E312F"
-                        class="mb-5" width="640" height="480"></iframe>
+                        class="mb-5" width="100%" height="480" zoom="5"></iframe>
                 </div>
             </section>
         </div>
@@ -319,27 +333,44 @@ onBeforeUnmount(() => {
                 <div class="modal-content">
                     <div class="modal-header"
                         style="display: flex; justify-content: center; background-color: #fe6f61;">
-                        <h5 class="modal-title text-uppercase fw-bold " id="modalPlatoEspecialLabel"
-                            style="color: white;">Ven y disfruta de nuestro plato especial de temporada!
+                        <h5 class="modal-title text-uppercase fw-bold" id="modalPlatoEspecialLabel"
+                            style="color: white;">
+                            Ven y disfruta de nuestro plato especial de temporada!
                         </h5>
                         <button class="btn-close" @click="mostrarModalEspecial = false"></button>
                     </div>
-                    <div class="modal-body d-flex">
+                    <div class="modal-body d-flex position-relative">
+                        <!-- Flecha izquierda (anterior) -->
+                        <button v-if="platoEspecial.length > 1" class="carousel-control-prev modal-arrow" type="button"
+                            @click="anteriorPlato" style="left: -30px;">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
                         <!-- Imagen del Plato Especial -->
                         <div class="col-md-6" style="display: flex; align-items: center; max-height: 100vh">
-                            <img :src="platoEspecial[0].imagen" class="img-fluid" alt="Imagen del Plato Especial"
-                                style="border-radius: 10px; max-height: 80vh;">
+                            <img :src="platoEspecial[currentPlatoIndex].imagen" class="img-fluid"
+                                alt="Imagen del Plato Especial" style="border-radius: 10px; max-height: 80vh;">
                         </div>
+
                         <!-- Información del Plato Especial -->
                         <div class="col-md-6 d-flex flex-column justify-content-center p-4">
                             <h5 class="modal-title text-uppercase fw-bold" id="modalPlatoEspecialLabel"
-                                style="color: #734a4a;">{{ platoEspecial[0].nombre_plat }}
+                                style="color: #734a4a;">
+                                {{ platoEspecial[currentPlatoIndex].nombre_plat }}
                             </h5>
-                            <p v-html="formatearDescripcion(platoEspecial[0].descrip_plat)"></p>
+                            <p v-html="formatearDescripcion(platoEspecial[currentPlatoIndex].descrip_plat)"></p>
                             <button type="button" class="btn"
                                 style="background-color: #734a4a; color: #fdfefe; font-weight: bold;"
                                 @click="irReserva()">Reservar Ahora</button>
                         </div>
+
+                        <!-- Flecha derecha (siguiente) -->
+                        <button v-if="platoEspecial.length > 1" class="carousel-control-next modal-arrow" type="button"
+                            @click="siguientePlato" style="right: -30px;">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -356,5 +387,22 @@ onBeforeUnmount(() => {
     height: 100vh;
     background-color: rgba(0, 0, 0, 1);
     z-index: 1040;
+}
+
+.modal-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+/* Cambiar el color de las flechas de navegación a negro */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: black;
+    filter: invert(1);
+    /* Esto asegurará que el ícono sea visible en todos los navegadores */
 }
 </style>

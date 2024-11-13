@@ -191,7 +191,7 @@ watch(cargo, (newValue) => {
                     <div class="mb-3">
                         <label for="formFileLg" class="form-label" style="color: #734a4a; font-weight: bold;">Hoja de
                             Vida</label>
-                        <input class="form-control form-control-lg" id="formFileLg" type="file" @change="subirHojaVida"
+                        <input class="form-control form-control-lg" id="formFileLg" type="file" accept="application/pdf" @change="subirHojaVida"
                             style="border-color: #734a4a; color: #734a4a; font-size: medium;" required>
                         <p style="color: #734a4a; font-size: small; font-weight: bold;">El archivo debe ser en pdf</p>
                         <div class="invalid-feedback">Cargue el archivo</div>

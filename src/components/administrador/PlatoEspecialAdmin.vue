@@ -259,7 +259,8 @@ onMounted(() => {
                             </td>
                             <td>
                                 <button :class="['btn', pe.estado ? 'btn-success' : 'btn-danger']"
-                                    @click="cambiarEstadoPlatoEspecial(pe)" style="margin-left: 10px; font-weight: bold;">
+                                    @click="cambiarEstadoPlatoEspecial(pe)"
+                                    style="margin-left: 10px; font-weight: bold;">
                                     {{ pe.estado ? 'Activo' : 'Inactivo' }}
                                 </button>
                             </td>

@@ -10,11 +10,12 @@ import Carta5 from '../assets/carta/Carta5.jpg';
 import Carta6 from '../assets/carta/Carta6.jpg';
 
 const useMenu = useStoreMenu();
-const useCartaMenu = useStoreCarta();
+const useCartaMenu = useStoreCarta();   
 const menus = ref([]);
 const cartaMenu = ref();
 const loading = ref(false);
 const loadingCarta = ref(false);
+const imagenSeleccionada = ref(null);
 
 async function getMenu() {
     loading.value = true;
@@ -46,6 +47,12 @@ async function getCartaMenu() {
     }
 }
 
+function mostrarImagenEnModal(menu) {
+    imagenSeleccionada.value = menu.imagen[0].url;
+    const modal = new bootstrap.Modal(document.getElementById('modalImagen'));
+    modal.show();
+}
+
 onMounted(() => {
     getMenu();
     getCartaMenu();
@@ -62,17 +69,26 @@ onMounted(() => {
                 <div class="col-md-4" v-for="menu in menus" :key="menu._id">
                     <div class="card uniform-card rounded-2 mb-3">
                         <img :src="menu.imagen[0].url" class="card-img-top rounded-2 uniform-image"
-                            alt="Carta Menu Rest. JuanMar">
+                            @click="mostrarImagenEnModal(menu)" alt="Carta Menu Rest. JuanMar" style="cursor: pointer;">
                     </div>
                 </div>
             </div>
             <div class="mt-3">
-                <a v-for="carta in cartaMenu" :key="carta._id" :href="carta.archivoUrl.url" target="_blank" download="CARTA_Juanmar_2024.pdf"
-                    style="color: #734a4a; font-weight: bold;">
+                <a v-for="carta in cartaMenu" :key="carta._id" :href="carta.archivoUrl.url" target="_blank"
+                    download="CARTA_Juanmar_2024.pdf" style="color: #734a4a; font-weight: bold;">
                     <i class="bi bi-file-arrow-down fs-4"></i> Carta del Menu
                 </a>
             </div>
+        </div>
 
+        <div class="modal fade" id="modalImagen" tabindex="-1" aria-labelledby="modalImagenLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <img :src="imagenSeleccionada" class="img-fluid" alt="Vista previa de la imagen">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
