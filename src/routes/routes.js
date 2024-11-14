@@ -15,8 +15,9 @@ import GaleriaAdmin from "../components/administrador/GaleriaAdmin.vue";
 import TrabajaConNosotrosAdmin from "../components/administrador/TrabajaAdmin.vue";
 import ContactenosAdmin from "../components/administrador/ContactenosAdmin.vue";
 import EditarPerfil from "../components/administrador/EditarPerfil.vue";
-import Mision from '../components/administrador/Mision.vue';
-import PlatoEspecialAdmin from '../components/administrador/PlatoEspecialAdmin.vue';
+import Mision from "../components/administrador/Mision.vue";
+import PlatoEspecialAdmin from "../components/administrador/PlatoEspecialAdmin.vue";
+import recuperarContra from "../components/recuperarContraseña/RecuperarContrasena.vue";
 
 const routes = [
   {
@@ -94,6 +95,7 @@ const routes = [
       },
     ],
   },
+  { path: "/recuperar-contrasena", component: recuperarContra },
 ];
 
 export const router = createRouter({

@@ -127,6 +127,10 @@ function irPlatoEspecialAdmin() {
     router.push('/plato-especial')
 }
 
+function irRecuperarContrasena() {
+    router.push('/recuperar-contrasena')
+}
+
 // Función para cerrar sesión
 const logout = () => {
     useUsuario.token = ''; // Eliminar el token
@@ -189,7 +193,6 @@ const logout = () => {
                             <i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i>Ingresar
                         </button>
 
-                        <!-- Modales para Ingresar y Recuperar Contraseña -->
                         <!-- Capa de fondo opaco -->
                         <div v-if="mostrarModalLogin" class="modal-backdrop fade show"></div>
 
@@ -221,59 +224,20 @@ const logout = () => {
                                                 <input type="password" class="form-control" id="Contraseña"
                                                     v-model="contrasena" maxlength="20" required>
                                             </div>
-                                            <a data-bs-toggle="modal" data-bs-target="#RecuperarContraseña"
-                                                style="font-size: small; color: #734a4a; font-weight: bold; text-decoration: none;"
-                                                href="#">Recuperar Contraseña</a>
-                                            <div class="modal-footer" style="background-color: #fe6f61;">
+
+                                            <div class="modal-footer" style="background-color: #fe6f61; display: flex; justify-content: center;">
                                                 <button type="submit" class="btn"
-                                                    style="background-color: #734a4a; color: #fdfefe; font-weight: bold;" :disabled="loading">
-                                                    <span v-if="loading"
-                                                        class="spinner-border spinner-border-sm" role="status"
-                                                        aria-hidden="true"></span>
+                                                    style="background-color: #734a4a; color: #fdfefe; font-weight: bold;"
+                                                    :disabled="loading">
+                                                    <span v-if="loading" class="spinner-border spinner-border-sm"
+                                                        role="status" aria-hidden="true"></span>
                                                     <span v-if="!loading">Ingresar</span>
                                                 </button>
                                             </div>
+                                            <a data-bs-toggle="modal" data-bs-target="#RecuperarContraseña"
+                                                style="font-size: small; color: #734a4a; font-weight: bold; text-decoration: none; cursor: pointer;"
+                                                @click="irRecuperarContrasena()">¿Olvidó su contraseña?</a>
                                         </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="modal fade" id="RecuperarContraseña" data-bs-backdrop="static"
-                            data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="RecuperarContraseña"
-                            aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header" style="background-color: #fe6f61;">
-                                        <h4 class="modal-title fs-5" id="RecuperarContraseña"
-                                            style="color: #fdfefe; font-weight: bold;">
-                                            Recuperar Contraseña
-                                        </h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body" style="background-color: #facac5;">
-                                        <form>
-                                            <div class="form-group mb-3">
-                                                <label for="NumeroDocumento"
-                                                    class="form-label d-flex justify-content-start"
-                                                    style="color: #734a4a; font-size: smaller; font-weight: bold;">Numero
-                                                    de Documento:</label>
-                                                <input type="number" class="form-control" id="NumeroDocumento" required>
-                                            </div>
-                                            <div class="form-group mb-3">
-                                                <label for="Email" class="form-label d-flex justify-content-start"
-                                                    style="color: #734a4a; font-size: smaller; font-weight: bold;">Correo
-                                                    Electronico:</label>
-                                                <input type="email" class="form-control" id="Email"
-                                                    placeholder="email@gmail.com" required>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer" style="background-color: #fe6f61;">
-                                        <button type="button" class="btn" data-bs-dismiss="modal"
-                                            style="background-color: #734a4a; color: #fdfefe; font-weight: bold;">Enviar</button>
                                     </div>
                                 </div>
                             </div>

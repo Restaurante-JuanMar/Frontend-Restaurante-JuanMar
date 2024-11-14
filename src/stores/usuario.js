@@ -5,7 +5,6 @@ import { useRouter } from "vue-router";
 
 const modelo = "admin";
 
-
 export const useStoreUsuarios = defineStore(
   modelo,
   () => {
@@ -19,10 +18,23 @@ export const useStoreUsuarios = defineStore(
     const correoRecuperar = ref("");
     const router = useRouter();
 
-
     function insertarToken() {
       axios.defaults.headers.common["x-token"] = token.value;
     }
+
+    // Obtener una solicitud por ID
+    const getById = async () => {
+      try {
+        const response = await axios.get(`/${modelo}/${id.value}`);
+        console.log(response);
+        estatus.value = response.status;
+        return response.data;
+      } catch (error) {
+        console.error("Error al obtener usuario por ID:", error);
+        estatus.value = error.response?.status || 500;
+        validacion.value = error.response.data.error;
+      }
+    };
 
     const codigoRecuperar = async (correo) => {
       try {
@@ -30,7 +42,7 @@ export const useStoreUsuarios = defineStore(
           `${modelo}/codigo-recuperar/${correo}`
         );
         email.value = correo;
-        estatus.value = response.status
+        estatus.value = response.status;
         return response;
       } catch (error) {
         console.log(error);
@@ -78,6 +90,7 @@ export const useStoreUsuarios = defineStore(
       } catch (error) {
         console.log(error);
         estatus.value = error.response.status;
+        validacion.value = error.response.data.error;
         if (error.message === "Network Error") {
           validacion.value = "Sin conexión, por favor intente recargar";
           console.log(validacion);
@@ -112,7 +125,10 @@ export const useStoreUsuarios = defineStore(
     const cambiarPassword = async (data) => {
       try {
         insertarToken();
-        const response = await axios.put(`${modelo}/cambioPassword/${id.value}`, data);
+        const response = await axios.put(
+          `${modelo}/cambioPassword/${id.value}`,
+          data
+        );
         console.log(response);
         estatus.value = response.status;
         return response.data;
@@ -128,7 +144,9 @@ export const useStoreUsuarios = defineStore(
           error.response.data.error === "Token no válido" ||
           error.response.data.error.name === "TokenExpiredError"
         ) {
-          console.log("Tu sesión ha expirado. Por favor vuelva a iniciar sesión");
+          console.log(
+            "Tu sesión ha expirado. Por favor vuelva a iniciar sesión"
+          );
           router.push("/home");
           return null;
         }
@@ -165,6 +183,7 @@ export const useStoreUsuarios = defineStore(
     };
 
     return {
+      getById,
       login,
       registro,
       editar,
