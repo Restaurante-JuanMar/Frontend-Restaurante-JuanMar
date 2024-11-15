@@ -370,7 +370,7 @@ onMounted(() => {
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr style="text-align: center;">
-                            <th scope="col" style="color: #734a4a;">Numero de Tiquete</th>
+                            <th scope="col" style="color: #734a4a;">Numero de Ticket</th>
                             <th scope="col" style="color: #734a4a;">Nombre</th>
                             <th scope="col" style="color: #734a4a;">Apellidos</th>
                             <th scope="col" style="color: #734a4a;">Archivo</th>
@@ -425,10 +425,10 @@ onMounted(() => {
                                     reservaSeleccionada.telefono_cliente2 }}</p>
                         <p><strong style="color: #734a4a;">Fecha Reserva:</strong> {{
                             formatFecha(reservaSeleccionada.fecha_res)
-                        }}
+                            }}
                         </p>
                         <p v-if="reservaSeleccionada.identificador"><strong style="color: #734a4a;">Número
-                                Tiquete:</strong> {{
+                                Ticket:</strong> {{
                                     reservaSeleccionada.identificador }}
                         </p>
                         <p><strong style="color: #734a4a;">Descripción Reserva:</strong> {{
@@ -436,7 +436,7 @@ onMounted(() => {
                         </p>
                         <p><strong style="color: #734a4a;">Enviada el:</strong> {{
                             formatFechaDetalle(reservaSeleccionada.createdAt)
-                        }}</p>
+                            }}</p>
                     </div>
                 </div>
             </div>

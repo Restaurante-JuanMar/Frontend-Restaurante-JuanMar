@@ -47,7 +47,7 @@ async function guardarCambios() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (useMenu.estatus === 400) {
+        } else if (useMenu.estatus === 400 || useMenu.estatus === 404 || useMenu.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;
@@ -134,7 +134,7 @@ async function guardarCambiosCarta() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (useCartaMenu.estatus === 400) {
+        } else if (useCartaMenu.estatus === 400 || useCartaMenu.estatus === 404 || useCartaMenu.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;

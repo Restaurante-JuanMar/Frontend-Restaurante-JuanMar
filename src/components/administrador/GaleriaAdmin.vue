@@ -85,7 +85,7 @@ async function guardarCambios() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (useGaleria.estatus === 400) {
+        } else if (useGaleria.estatus === 400 || useGaleria.estatus === 404 || useGaleria.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;

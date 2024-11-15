@@ -62,7 +62,7 @@ async function guardarCambios() {
             setTimeout(() => {
                 notificacionVisible.value = false;
             }, 3000);
-        } else if (usePlatoEspecial.estatus === 400) {
+        } else if (usePlatoEspecial.estatus === 400 || usePlatoEspecial.estatus === 404 || usePlatoEspecial.estatus === 500) {
             // Mostramos un mensaje de validación en caso de error 400
             notificacionValidacion.value = true;
             mensajeValidacion.value = usePlatoEspecial.validacion;

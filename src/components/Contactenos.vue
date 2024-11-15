@@ -127,7 +127,7 @@ async function guardarSolicitudPqr() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (usePqr.estatus === 400) {
+        } else if (usePqr.estatus === 400 || usePqr.estatus === 404 || usePqr.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;
@@ -205,7 +205,7 @@ function limpiarPqr() {
     telefonopqr.value = '';
     tipopqr.value = '';
     asunto.value = '';
-    descripcionpqr.value
+    descripcionpqr.value = '';
     datapqr.value.nombre = '';
     datapqr.value.apellido = '';
     datapqr.value.tipoDocumento = '';
@@ -367,7 +367,7 @@ function limpiarPqr() {
                                             <option value="Queja">Queja</option>
                                             <option value="Reclamo">Reclamo</option>
                                             <option value="Solicitud">Solicitud</option>
-                                            <option value="Felicitaciones">Felicitaciones</option>
+                                            <option value="Felicitación">Felicitación</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">

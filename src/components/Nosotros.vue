@@ -95,7 +95,6 @@ onMounted(() => {
                     romántica o una reunión familiar. No esperes más y reserva tu mesa para vivir una experiencia única,
                     donde cada visita es una oportunidad para crear recuerdos inolvidables.</span>
             </p>
-            <p style="text-align: justify; color: #734a4a; font-weight: bold;">¡No esperes más y visítanos!</p>
             <!--<img src="imagenes/JUANMAR RESTAURANTE-10.png" class="mb-3" width="100%" height="100%"  alt="Restaurante JuanMar">-->
             <div class="mt-5">
                 <h4 class="mb-3" style="color: #734a4a; font-weight: bold;">Misión</h4>

@@ -52,7 +52,7 @@ async function guardarSolicitud() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (useTrabajaNosotros.estatus === 400) {
+        } else if (useTrabajaNosotros.estatus === 400 || useTrabajaNosotros.estatus === 404 || useTrabajaNosotros.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;

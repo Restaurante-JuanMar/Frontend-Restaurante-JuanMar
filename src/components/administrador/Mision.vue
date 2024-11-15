@@ -54,7 +54,7 @@ async function guardarCambiosMision() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (useMision.estatus === 400) {
+        } else if (useMision.estatus === 400 || useMision.estatus === 404 || useMision.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;
@@ -102,7 +102,7 @@ async function guardarCambiosVision() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (useVision.estatus === 400) {
+        } else if (useVision.estatus === 400 || useVision.estatus === 404 || useVision.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;

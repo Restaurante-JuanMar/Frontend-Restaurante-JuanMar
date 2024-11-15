@@ -29,7 +29,7 @@ const login = async () => {
             limpiar();
             irInicioAdmin();
 
-        } else if (useUsuario.estatus === 400 || useUsuario.estatus === 401) {
+        } else if (useUsuario.estatus === 400 || useUsuario.estatus === 401 || useUsuario.estatus === 404 || useUsuario.estatus === 500) {
             notificacionVisible.value = true;
             validacion.value = 'Usuario o contraseña incorrectos';
             setTimeout(() => {

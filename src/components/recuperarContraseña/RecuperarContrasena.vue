@@ -47,7 +47,7 @@ async function enviarCodigo() {
   try {
     const response = await useUsuario.codigoRecuperar(email.value);
 
-    if (useUsuario.estatus === 400) {
+    if (useUsuario.estatus === 400 || useUsuario.estatus === 404 || useUsuario.estatus === 500) {
       notificacionValidacion.value = true;
       mensajeValidacion.value = useUsuario.validacion;
       setTimeout(() => {

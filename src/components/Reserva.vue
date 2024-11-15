@@ -54,6 +54,9 @@ async function guardarCambios() {
         mensaje_res: descripcion.value,
     }
 
+    notificacionCargando.value = true;
+    mensajeCargando.value = 'Enviando reserva...';
+
     try {
         // Llamada a la API para crear o actualizar el menú con los datos actuales
         const response = await useReserva.crearReserva(data.value);
@@ -69,7 +72,7 @@ async function guardarCambios() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (useReserva.estatus === 400) {
+        } else if (useReserva.estatus === 400 || useReserva.estatus === 404 || useReserva.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;
@@ -80,6 +83,8 @@ async function guardarCambios() {
             }, 3000);
         }
     } catch (error) {
+        notificacionCargando.value = false;
+        mensajeCargando.value = '';
         notificacionValidacion.value = true;
         mensajeValidacion.value = useReserva.validacion;
 
@@ -116,7 +121,7 @@ async function guardarCambiosListadoPlato() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (useListadoPlato.estatus === 400 || useListadoPlato.estatus === 404) {
+        } else if (useListadoPlato.estatus === 400 || useListadoPlato.estatus === 404 || useListadoPlato.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;
@@ -265,13 +270,16 @@ function getCurrentDate() {
                         <label for="exampleFormControlDescripcion" style="font-weight: bold; color: #734a4a;"
                             class="form-label">Descripción <span class="text-danger">*</span></label>
                         <textarea class="form-control" v-model="descripcion" id="exampleFormControlDescripcion" rows="3"
-                            style="border-color: #734a4a" placeholder="Digite la descripción de la reserva"
+                            style="border-color: #734a4a" placeholder="Digite la descripción (hora de la reserva si es el caso)"
                             required></textarea>
                     </div>
                     <div class="mb-5">
                         <div>
                             <button type="submit" class="btn"
-                                style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;">Enviar</button>
+                                style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;"
+                                :disabled="guardando"><span v-if="guardando" class="spinner-border spinner-border-sm"
+                                    role="status" aria-hidden="true"></span>
+                                <span v-if="!guardando">Enviar</span></button>
                         </div>
                     </div>
                 </form>
@@ -295,15 +303,15 @@ function getCurrentDate() {
                         <div class="mb-3">
                             <label for="NumeroTique" style="font-weight: bold; color: #734a4a;"
                                 class="form-label">Numero de
-                                Tique</label>
+                                Ticket</label>
                             <input type="number" class="form-control" id="NumeroTique" v-model="num_tiquete"
-                                placeholder="Digite el numero del tique" style="border-color: #734a4a" required>
+                                placeholder="Digite el numero del ticket" style="border-color: #734a4a" required>
                         </div>
                         <div class="mb-3">
                             <label for="formFileLg" class="form-label"
                                 style="color: #734a4a; font-weight: bold;">Archivo
                                 del Listado</label>
-                            <input class="form-control form-control-lg" id="formFileLg" type="file" 
+                            <input class="form-control form-control-lg" id="formFileLg" type="file"
                                 @change="subirArchivoListadoPlato" accept="application/pdf"
                                 style="border-color: #734a4a; color: #734a4a; font-size: medium;" required>
                             <p style="color: #734a4a; font-weight: bold; font-size: small;">El archivo debe ser en pdf
@@ -312,9 +320,9 @@ function getCurrentDate() {
                         </div>
                         <button type="submit" class="btn mb-5"
                             style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;"
-                            :disabled="loadingArchivo"> <span v-if="guardando" class="spinner-border spinner-border-sm"
-                                role="status" aria-hidden="true"></span>
-                            <span v-if="!guardando">Enviar</span></button>
+                            :disabled="loadingArchivo"> <span v-if="guardandoArchivo"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span v-if="!guardandoArchivo">Enviar</span></button>
                     </div>
                 </form>
             </div>

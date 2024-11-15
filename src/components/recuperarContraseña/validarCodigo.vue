@@ -26,7 +26,7 @@ async function confirmarCodigo() {
 
     if (useUsuario.estatus === 200) {
       componenteNuevaPass.value = true;
-    } else if (useUsuario.estatus == 400) {
+    } else if (useUsuario.estatus == 400 || useUsuario.estatus === 404 || useUsuario.estatus === 500) {
       notificacionValidacion.value = true;
       mensajeValidacion.value = useUsuario.validacion;
       setTimeout(() => {

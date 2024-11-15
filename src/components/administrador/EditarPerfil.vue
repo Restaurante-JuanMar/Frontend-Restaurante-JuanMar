@@ -69,7 +69,7 @@ async function guardarCambios() {
                 notificacionVisible.value = false;
                 mensajeNotificacion.value = '';
             }, 3000);
-        } else if (useUsuario.estatus === 400 || useUsuario.estatus === 404) {
+        } else if (useUsuario.estatus === 400 || useUsuario.estatus === 404 || useUsuario.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;
@@ -138,7 +138,7 @@ async function cambiarPassword() {
             }, 2500);
         }
         // Check for estatus 401 (session expired)
-        else if (useUsuario.estatus === 401) {
+        else if (useUsuario.estatus === 401 || useUsuario.estatus === 404 || useUsuario.estatus === 500) {
             notificacionCargando.value = false;
             mensajeCargando.value = '';
             notificacionValidacion.value = true;
