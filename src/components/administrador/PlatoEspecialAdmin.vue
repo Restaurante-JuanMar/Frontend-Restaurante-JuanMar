@@ -14,6 +14,7 @@ const mensajeNotificacion = ref('');
 const loadingFotos = ref(false);
 const guardando = ref(false);
 const loading = ref(false)
+const loadingActInac = ref(false);
 const platosEspeciales = ref([]);
 const platoSelecionado = ref('');
 const imagenSeleccionada = ref();
@@ -119,20 +120,34 @@ async function subirFotoPlatoEspecial(event) {
 }
 
 async function cambiarEstadoPlatoEspecial(pe) {
+    const plato = platosEspeciales.value.find(plato => plato._id === pe._id);
+    if (!plato) return; // Validación por seguridad
+
+    plato.loadingActInac = true; // Activamos el loading solo para este plato
+
+    // Actualizamos el estado local inmediatamente para evitar el efecto "parpadeo"
+    const estadoAnterior = plato.estado; // Guardamos el estado anterior en caso de error
+    plato.estado = !plato.estado; // Cambiamos el estado localmente
+
     try {
-        if (pe.estado) {
-            // Si el plato está activo, lo inactivamos
+        if (estadoAnterior) {
+            // Si estaba activo, intentamos inactivarlo
             await usePlatoEspecial.inactivarPlato(pe._id);
         } else {
-            // Si el plato está inactivo, lo activamos
+            // Si estaba inactivo, intentamos activarlo
             await usePlatoEspecial.activarPlato(pe._id);
         }
-        // Refrescar la lista de platos especiales después de cambiar el estado
-        getPlatosEspeciales();
     } catch (error) {
         console.error("Error al cambiar el estado del plato especial:", error);
+        // Si hubo un error, revertimos el estado local
+        plato.estado = estadoAnterior;
+    } finally {
+        plato.loadingActInac = false; // Desactivamos el loading
     }
 }
+
+
+
 
 
 function cargarDatosPE(pe) {
@@ -157,15 +172,19 @@ async function getPlatosEspeciales() {
     try {
         const response = await usePlatoEspecial.getAll();
         if (usePlatoEspecial.estatus === 200) {
-            platosEspeciales.value = response
+            platosEspeciales.value = response.map(pe => ({
+                ...pe,
+                loadingActInac: false // Agregamos el estado de carga por plato
+            }));
         }
-        console.log("platos especiales", response)
+        console.log("platos especiales", response);
     } catch (error) {
         console.log(error);
     } finally {
         loading.value = false;
     }
 }
+
 
 function mostrarImagenEnModal(pe) {
     platoSelecionado.value = pe.nombre_plat;
@@ -260,8 +279,10 @@ onMounted(() => {
                             <td>
                                 <button :class="['btn', pe.estado ? 'btn-success' : 'btn-danger']"
                                     @click="cambiarEstadoPlatoEspecial(pe)"
-                                    style="margin-left: 10px; font-weight: bold;">
-                                    {{ pe.estado ? 'Activo' : 'Inactivo' }}
+                                    style="margin-left: 10px; font-weight: bold;" :disabled="pe.loadingActInac">
+                                    <span v-if="pe.loadingActInac" class="spinner-border spinner-border-sm"
+                                        role="status" aria-hidden="true"></span>
+                                    <span v-if="!pe.loadingActInac"> {{ pe.estado ? 'Activo' : 'Inactivo' }}</span>
                                 </button>
                             </td>
                             <td>
