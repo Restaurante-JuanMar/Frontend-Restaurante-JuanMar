@@ -225,7 +225,8 @@ const logout = () => {
                                                     v-model="contrasena" maxlength="20" required>
                                             </div>
 
-                                            <div class="modal-footer" style="background-color: #fe6f61; display: flex; justify-content: center;">
+                                            <div class="modal-footer"
+                                                style="background-color: #fe6f61; display: flex; justify-content: center;">
                                                 <button type="submit" class="btn"
                                                     style="background-color: #734a4a; color: #fdfefe; font-weight: bold;"
                                                     :disabled="loading">
@@ -332,40 +333,48 @@ const logout = () => {
             {{ validacion }}
         </div>
 
-        <!-- Footer fijo en la parte inferior de la pantalla -->
-        <footer v-if="!useUsuario.token" class="footer text-center text-lg-start">
+
+        <footer v-if="!useUsuario.token" class="text-center text-lg-starte" style="background-color: #fe6f61;">
             <div class="container p-3">
-                <div class="row">
-                    <div class="col-lg-4 col-md-12 d-flex justify-content-center align-items-center mb-md-0">
-                        <img :src="LogoSinFondo" alt="Restaurante JuanMar">
-                    </div>
-                    <div class="col-lg-4 col-md-12 text-center">
+                <form class="row">
+                    <div class="col-lg-4 col-md-12 md-12 md-4 mb-0">
                         <h6 style="color: #fdfefe; font-weight: bold; margin: 5px;">Siganos en Nuestra Redes</h6>
                         <div
                             style="display: flex; justify-content: center; align-items: center; height: 100px; gap: 10px;">
-                            <a href="https://www.facebook.com/JuanmarRestauranteSanGil" target="_blank"
-                                style="color: #fdfefe; font-size: 30px;"><i class="bi bi-facebook"></i></a>
-                            <a href="https://www.instagram.com/juanmarrestaurante" target="_blank"
-                                style="color: #fdfefe; font-size: 30px;"><i class="bi bi-instagram"></i></a>
+                            <a style="color: #fdfefe; font-size: 30px;"
+                                href="https://www.facebook.com/JuanmarRestauranteSanGil?mibextid=ZbWKwL"
+                                target="_blank"><i class="bi bi-facebook"></i></a>
+                            <a style="color: #fdfefe; font-size: 30px;"
+                                href="https://www.instagram.com/juanmarrestaurante?igsh=MWRwbmZ3OWJ1ZmQ2aA=="
+                                target="_blank"><i class="bi bi-instagram"></i></a>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12 text-center">
-                        <h6 style="color: #fdfefe; font-weight: bold; margin: 5px;">Contacto</h6>
-                        <a href="https://wa.me/3022654186" target="_blank" class="whatsapp-button"
-                            style="color: #fdfefe; font-size: 30px; text-decoration: none;">
-                            <i class="bi bi-whatsapp"></i></a>
-                        <a href="https://wa.me/3228008473" target="_blank" class="whatsapp-button"
-                            style="color: #fdfefe; font-size: 30px; text-decoration: none;">
-                            <i class="bi bi-whatsapp"></i></a>
-                        <p style="color: #fdfefe; font-size: 30px;"><i class="bi bi-envelope-at-fill"></i></p>
-                        <p style="color: #fdfefe; font-weight: bold;">juanmarrestaurantesocorro@gmail.com</p>
+                    <div class="col-lg-4 col-md-12 md-12 md-4 mb-md-0"
+                        style="display: flex; justify-content: center; align-items: center;">
+                        <img :src="LogoSinFondo" alt="Restaurante JuanMar">
                     </div>
-                </div>
+                    <div class="col-lg-4 col-md-12 md-12 md-4 mb-0">
+                        <h6 style="color: #fdfefe; font-weight: bold; margin: 5px;">Contacto</h6>
+                        <a style="color: #fdfefe; font-size: 30px; text-decoration: none;"
+                            href="https://wa.me/3022654186" target="_blank" class="whatsapp-button"><i
+                                class="bi bi-whatsapp"></i></a>
+                        <a style="color: #fdfefe; font-size: 30px; text-decoration: none;"
+                            href="https://wa.me/3228008473" target="_blank" class="whatsapp-button"><i
+                                class="bi bi-whatsapp"></i></a>
+                        <p style="color: #fdfefe; font-size: 30px;"><i class="bi bi-envelope-at-fill"></i></p>
+                        <p style="color: #fdfefe; font-weight: bold; position: relative; bottom: 20px;">
+                            juanmarrestaurantesocorro@gmail.com</p>
+                    </div>
+                </form>
                 <div class="text-center">
-                    <p style="color: #fdfefe; font-size: smaller; font-weight: bold;">© 2024 Restaurante JuanMar</p>
+                    <p style="color: #fdfefe; font-size: smaller; font-weight: bolder;">© 2024 Copyright: Restaurante
+                        JuanMar</p>
                 </div>
             </div>
         </footer>
+
+        <!-- Footer fijo en la parte inferior de la pantalla -->
+        
     </div>
 </template>
 
