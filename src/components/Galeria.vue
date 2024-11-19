@@ -22,6 +22,22 @@ const galerias = ref([]);
 const loading = ref(false);
 const imagenSeleccionada = ref('');
 const eventoSeleccionado = ref('');
+const imagenesGaleria = ref([
+    { url: EquipoTrabajo, titulo: 'Equipo de Trabajo' },
+    { url: Fachada, titulo: 'Fachada' },
+    { url: Ingreso, titulo: 'Ingreso' },
+    { url: Salon1, titulo: 'Salón 1' },
+    { url: Salon2, titulo: 'Salón 2' },
+    { url: Recepcion, titulo: 'Recepción' },
+    { url: Salon3, titulo: 'Salón 3' },
+    { url: Patio, titulo: 'Patio' },
+    { url: Patio2, titulo: 'Patio 2' },
+    { url: Salon41, titulo: 'Salón 4.1' },
+    { url: Salon42, titulo: 'Salón 4.2' },
+    { url: Salon5, titulo: 'Salón 5' },
+]);
+const indiceActual = ref(0);
+
 
 async function getGaleria() {
     loading.value = true;
@@ -50,11 +66,26 @@ function mostrarImagenEnModal(galeria) {
     modal.show();
 }
 
-function mostrarImagen(url, nombre) {
-    imagenSeleccionada.value = url;  // Establece la URL de la imagen seleccionada
-    eventoSeleccionado.value = nombre;  // Establece el nombre o título de la imagen
-    const modal = new bootstrap.Modal(document.getElementById('modalImagen'));
-    modal.show();  // Muestra el modal con la imagen
+function mostrarImagen(index) {
+    indiceActual.value = index; // Establece el índice actual
+    const modal = new bootstrap.Modal(document.getElementById('modalImagenFijas'));
+    modal.show();
+}
+
+function siguienteImagen() {
+    if (indiceActual.value < imagenesGaleria.value.length - 1) {
+        indiceActual.value++;
+    } else {
+        indiceActual.value = 0; // Vuelve al inicio
+    }
+}
+
+function anteriorImagen() {
+    if (indiceActual.value > 0) {
+        indiceActual.value--;
+    } else {
+        indiceActual.value = imagenesGaleria.value.length - 1; // Va al final
+    }
 }
 
 
@@ -77,110 +108,50 @@ onMounted(() => {
                     <div class="card card-degradado rounded-4">
                         <img :src="EquipoTrabajo" class="img-fluid rounded-4"
                             style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Equipo de Trabajo"
-                            @click="mostrarImagen(EquipoTrabajo, 'Equipo de Trabajo')">
+                            @click="mostrarImagen(0)">
                     </div>
                 </div>
             </div>
-            <!--Galeria del restaurante-->
+
+            <!-- Galería del Restaurante -->
             <h4 class="mb-2 mt-3" style="color: #734a4a; font-weight: bold;">Restaurante</h4>
             <div class="row align-items-start">
-                <div class="row align-items-start">
-                    <!-- Fachada -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3 mb-sm-0">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Fachada" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Fachada"
-                                @click="mostrarImagen(Fachada, 'Fachada')">
-                        </div>
+                <div v-for="(imagen, index) in imagenesGaleria.slice(1)" :key="index"
+                    class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
+                    <div class="card card-degradado rounded-4">
+                        <img :src="imagen.url" class="img-fluid rounded-4"
+                            style="border-style: solid; border-color: #734a4a; cursor: pointer;" :alt="imagen.titulo"
+                            @click="mostrarImagen(index + 1)">
                     </div>
+                </div>
+            </div>
 
-                    <!-- Ingreso -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Ingreso" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Ingreso"
-                                @click="mostrarImagen(Ingreso, 'Ingreso')">
+            <!-- Modal -->
+            <div class="modal fade" id="modalImagenFijas" tabindex="-1" aria-labelledby="modalImagenLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalImagenLabel" style="color: #734a4a;">
+                                {{ imagenesGaleria[indiceActual].titulo }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    </div>
-
-                    <!-- Salon1 -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Salon1" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 1"
-                                @click="mostrarImagen(Salon1, 'Salón 1')">
-                        </div>
-                    </div>
-
-                    <!-- Salon2 -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Salon2" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 2"
-                                @click="mostrarImagen(Salon2, 'Salón 2')">
-                        </div>
-                    </div>
-
-                    <!-- Recepcion -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Recepcion" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Recepción"
-                                @click="mostrarImagen(Recepcion, 'Recepción')">
-                        </div>
-                    </div>
-
-                    <!-- Salon3 -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Salon3" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 3"
-                                @click="mostrarImagen(Salon3, 'Salón 3')">
-                        </div>
-                    </div>
-
-                    <!-- Patio -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Patio" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Patio"
-                                @click="mostrarImagen(Patio, 'Patio')">
-                        </div>
-                    </div>
-
-                    <!-- Patio2 -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Patio2" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; height: 310px; cursor: pointer;"
-                                alt="Patio 2" @click="mostrarImagen(Patio2, 'Patio 2')">
-                        </div>
-                    </div>
-
-                    <!-- Salon41 -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Salon41" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 4.1"
-                                @click="mostrarImagen(Salon41, 'Salón 4')">
-                        </div>
-                    </div>
-
-                    <!-- Salon42 -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Salon42" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 4.2"
-                                @click="mostrarImagen(Salon42, 'Salón 4.1')">
-                        </div>
-                    </div>
-
-                    <!-- Salon5 -->
-                    <div class="col-lg-4 col-md-6 col-sm-3 mt-3 mb-3">
-                        <div class="card card-degradado rounded-4">
-                            <img :src="Salon5" class="img-fluid rounded-4"
-                                style="border-style: solid; border-color: #734a4a; cursor: pointer;" alt="Salón 5"
-                                @click="mostrarImagen(Salon5, 'Salón 5')">
+                        <div class="modal-body text-center position-relative">
+                            <!-- Botón Anterior -->
+                            <button class="btn"
+                                style="z-index: 1050; position: absolute; top: 50%; left: 3%; font-size: 20px; background-color: #734a4a; color: white;"
+                                @click="anteriorImagen">
+                                <
+                            </button>
+                            <!-- Imagen -->
+                            <img :src="imagenesGaleria[indiceActual].url" class="img-fluid" alt="Imagen de galería">
+                            <!-- Botón Siguiente -->
+                            <button class="btn"
+                                style="z-index: 1050; position: absolute; top: 50%; right: 3%; font-size: 20px; background-color: #734a4a; color: white;"
+                                @click="siguienteImagen">
+                                >
+                            </button>
                         </div>
                     </div>
                 </div>

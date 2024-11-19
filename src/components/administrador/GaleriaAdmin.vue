@@ -219,116 +219,108 @@ onMounted(() => {
 
 <template>
     <div>
-        <div class="container d-flex justify-content-center">
-            <div class="col-md-6">
-                <div class="col mb-5 mt-5">
-                    <h4 style="color: #734a4a; font-weight:bold; text-align:center">Actualizar la Galeria de Eventos
-                        Especiales</h4>
-                </div>
-                <form action="" class="row" method="post" @submit.prevent="guardarCambios">
-                    <div class="mb-3">
-                        <label for="Tipoevento" style="font-weight: bold; color:#734a4a" class="form-label">Tipo de
-                            Evento</label>
-                        <input type="text" class="form-control" id="TipoEvento" v-model="nombre" required
-                            style="border-color:#734a4a; color:#734a4a" placeholder="Digite el nombre del evento">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-12 col-md-6">
+                    <div class="col mb-5 mt-5 text-center">
+                        <h4 style="color: #734a4a; font-weight:bold;">Actualizar la Galería de Eventos Especiales</h4>
                     </div>
-                    <div class="mb-3">
-                        <label for="Tipoevento" style="font-weight: bold; color:#734a4a"
-                            class="form-label">Posición</label>
-                        <select class="form-select" style="border-color:#734a4a; color:#734a4a; font-weight:bold"
-                            aria-label="Default select example" v-model="posicion" required>
-                            <option value="1">Posición 1</option>
-                            <option value="2">Posición 2</option>
-                            <option value="3">Posición 3</option>
-                            <option value="4">Posición 4</option>
-                            <option value="5">Posición 5</option>
-                            <option value="6">Posición 6</option>
-                            <option value="7">Posición 7</option>
-                            <option value="8">Posición 8</option>
-                            <option value="9">Posición 9</option>
-                            <option value="10">Posición 10</option>
-                            <option value="11">Posición 11</option>
-                            <option value="12">Posición 12</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Descripcion" style="font-weight: bold; color:#734a4a"
-                            class="form-label">Descripción</label>
-                        <textarea type="text" class="form-control" id="Descripcion" v-model="descripcion"
-                            style="border-color:#734a4a; color:#734a4a"
-                            placeholder="Digite una breve descripción del evento (máximo 100 carácteres)"
-                            maxlength="100" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="FechaEvento" style="font-weight: bold; color:#734a4a" class="form-label">Fecha del
-                            Evento</label>
-                        <input type="date" class="form-control" id="FechaEvento" v-model="fecha"
-                            style="border-color:#734a4a; color:#734a4a" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="ImagenMenu" class="form-label"
-                            style="border: #734a4a; color:#734a4a; font-weight:bold">Cargue la Imagen</label>
-                        <input class="form-control" type="file" id="ImagenMenu" @change="subirFotoGaleria"
-                            accept="image/*" style="border: 1px solid #734a4a; color:#734a4a;">
-                        <span id="NotaExtensionImg" style="font-weight: bold; color:#734a4a; font-size:small">La imagen
-                            debe pesar como máximo 10MB</span>
-                    </div>
-                    <div class="mt-2 mb-3">
-                        <button type="submit" class="btn"
-                            style="background-color: #734a4a; color:#fdfefe; font-weight:bold" :disabled="loadingFotos">
-                            <span v-if="guardando" class="spinner-border spinner-border-sm" role="status"
-                                aria-hidden="true"></span>
-                            <span v-if="!guardando">Actualizar</span></button>
-                    </div>
-                </form>
-                <div class="input-group mt-5 mb-3">
-                    <input type="text" class="form-control" placeholder="Buscar por fecha (dd/mm/aaaa)" v-model="filter"
-                        aria-label="Buscar" style="border: 1px solid #734a4a; color:#734a4a;">
-                    <button type="button" class="input-group-text" style="background-color: #734a4a; color: #fdfefe;"
-                        @click="filtrarFecha()">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr style="text-align: center;">
-                            <th scope="col" style="color: #734a4a;">Posición</th>
-                            <th scope="col" style="color: #734a4a;">Tipo Evento</th>
-                            <th scope="col" style="color: #734a4a;">Descripción</th>
-                            <th scope="col" style="color: #734a4a;">Fecha</th>
-                            <th scope="col" style="color: #734a4a;">Imagen</th>
-                            <th scope="col" style="color: #734a4a;">Editar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-center" v-for="galeria in galeriasFiltradas" :key="galeria._id">
-                            <td class="fw-bold" style="color: #734a4a;">{{ galeria.posicion }}</td>
-                            <td style="color: #734a4a;">{{ galeria.nombre_gal }}</td>
+                    <form action="" class="row g-3" method="post" @submit.prevent="guardarCambios">
+                        <div class="col-12">
+                            <label for="TipoEvento" class="form-label" style="font-weight: bold; color:#734a4a;">Tipo de
+                                Evento</label>
+                            <input type="text" class="form-control w-100" id="TipoEvento" v-model="nombre" required
+                                style="border-color:#734a4a; color:#734a4a;" placeholder="Digite el nombre del evento">
+                        </div>
+                        <div class="col-12">
+                            <label for="Posicion" class="form-label"
+                                style="font-weight: bold; color:#734a4a;">Posición</label>
+                            <select class="form-select w-100" id="Posicion" v-model="posicion" required
+                                style="border-color:#734a4a; color:#734a4a; font-weight:bold;">
+                                <option value="1">Posición 1</option>
+                                <option value="2">Posición 2</option>
+                                <!-- Agrega las demás opciones aquí -->
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="Descripcion" class="form-label"
+                                style="font-weight: bold; color:#734a4a;">Descripción</label>
+                            <textarea id="Descripcion" class="form-control w-100" v-model="descripcion" required
+                                maxlength="100" style="border-color:#734a4a; color:#734a4a;"
+                                placeholder="Digite una breve descripción del evento"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="FechaEvento" class="form-label" style="font-weight: bold; color:#734a4a;">Fecha
+                                del Evento</label>
+                            <input type="date" id="FechaEvento" class="form-control w-100" v-model="fecha" required
+                                style="border-color:#734a4a; color:#734a4a;">
+                        </div>
+                        <div class="col-12">
+                            <label for="ImagenMenu" class="form-label" style="font-weight: bold; color:#734a4a;">Cargue
+                                la Imagen</label>
+                            <input type="file" id="ImagenMenu" class="form-control w-100" @change="subirFotoGaleria"
+                                accept="image/*" style="border-color:#734a4a; color:#734a4a;">
+                            <small class="text-muted d-block mt-1" style="font-weight: bold; color:#734a4a;">La imagen
+                                debe pesar como máximo 10MB</small>
+                        </div>
+                        <div class="col-5 text-center">
+                            <button type="submit" class="btn w-100"
+                                style="background-color: #734a4a; color:#fdfefe; font-weight:bold;"
+                                :disabled="loadingFotos">
+                                <span v-if="guardando" class="spinner-border spinner-border-sm" role="status"
+                                    aria-hidden="true"></span>
+                                <span v-if="!guardando">Actualizar</span>
+                            </button>
+                        </div>
+                    </form>
 
-                            <td class="descripcion">
-                                <VMenu class="vmenu">
-                                    <span class="descripcion" style="color: #734a4a;">{{ galeria.descrip_gal.slice(0,
-                                        30) }} ...</span>
-                                    <template #popper>
-                                        <div class="descripVmenu">{{ galeria.descrip_gal }}</div>
-                                    </template>
-                                </VMenu>
-                            </td>
-                            <td style="color: #734a4a;">{{ formatFecha(galeria.fecha_gal) }}</td>
-                            <td>
-                                <img :src="galeria.imagen[0].url" width="100%" height="100px" alt="Evento especial"
-                                    style="cursor: pointer;" @click="mostrarImagenEnModal(galeria)">
-                            </td>
-                            <td>
-                                <button type="button" id="aceptar" class="btn" @click="cargarDatosGaleria(galeria)"
-                                    style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;"><i
-                                        class="bi bi-pencil-square"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <!-- Búsqueda -->
+                    <div class="input-group mt-5 mb-3">
+                        <input type="text" class="form-control" placeholder="Buscar por fecha (dd/mm/aaaa)"
+                            v-model="filter" aria-label="Buscar" style="border: 1px solid #734a4a; color:#734a4a;">
+                        <button type="button" class="input-group-text"
+                            style="background-color: #734a4a; color: #fdfefe;" @click="filtrarFecha()">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+
+                    <!-- Tabla -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr style="text-align: center;">
+                                    <th scope="col" style="color: #734a4a;">Posición</th>
+                                    <th scope="col" style="color: #734a4a;">Tipo Evento</th>
+                                    <th scope="col" style="color: #734a4a;">Descripción</th>
+                                    <th scope="col" style="color: #734a4a;">Fecha</th>
+                                    <th scope="col" style="color: #734a4a;">Imagen</th>
+                                    <th scope="col" style="color: #734a4a;">Editar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" v-for="galeria in galeriasFiltradas" :key="galeria._id">
+                                    <td>{{ galeria.posicion }}</td>
+                                    <td>{{ galeria.nombre_gal }}</td>
+                                    <td>{{ galeria.descrip_gal.slice(0, 30) }}...</td>
+                                    <td>{{ formatFecha(galeria.fecha_gal) }}</td>
+                                    <td>
+                                        <img :src="galeria.imagen[0].url" class="img-fluid" alt="Evento especial"
+                                            style="cursor: pointer;" @click="mostrarImagenEnModal(galeria)">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn" @click="cargarDatosGaleria(galeria)"
+                                            style="background-color: #734a4a; color: #fdfefe; font-weight: bold;">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+
 
         <div class="modal fade" id="modalImagen" tabindex="-1" aria-labelledby="modalImagenLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -344,7 +336,7 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-        
+
 
         <div v-if="notificacionVisible" class="custom-notify alert alert-success alert-dismissible fade show"
             role="alert">

@@ -137,14 +137,16 @@ onMounted(() => {
                         </tr>
                     </tbody>
                 </table>
+            </div>
 
-                <div v-if="limit < solicitudes.length" class="text-center my-3">
-                    <button @click="verMas" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver más
-                        solicitudes</button>
-                </div>
+            <div v-if="limit < solicitudes.length" class="text-center my-3">
+                <button @click="verMas" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver más
+                    solicitudes</button>
+            </div>
 
-                <h4 style="color: #734a4a; font-weight: bold; text-align: center;" class="mt-5 mb-3">Información de PQR
-                </h4>
+            <h4 style="color: #734a4a; font-weight: bold; text-align: center;" class="mt-5 mb-3">Información de PQR
+            </h4>
+            <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr style="text-align: center;">
@@ -193,11 +195,10 @@ onMounted(() => {
                         </tr>
                     </tbody>
                 </table>
-
-                <div v-if="limitPqr < solicitudesPqr.length" class="text-center my-3">
-                    <button @click="verMasPqr" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver más
-                        solicitudes pqr</button>
-                </div>
+            </div>
+            <div v-if="limitPqr < solicitudesPqr.length" class="text-center my-3">
+                <button @click="verMasPqr" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver más
+                    solicitudes pqr</button>
             </div>
         </div>
 
@@ -223,8 +224,9 @@ onMounted(() => {
             </div>
         </div>
 
-        
-        <div class="modal fade" id="modalDetallePqr" tabindex="-1" aria-labelledby="modalDetalleLabel" aria-hidden="true">
+
+        <div class="modal fade" id="modalDetallePqr" tabindex="-1" aria-labelledby="modalDetalleLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color: #fe6f61;">
@@ -233,15 +235,23 @@ onMounted(() => {
                     </div>
                     <div v-if="solicitudPqrSeleccionada" class="modal-body text-start">
                         <p><strong style="color: #734a4a;">Nombre:</strong> {{ solicitudPqrSeleccionada.nombre }}</p>
-                        <p><strong style="color: #734a4a;">Apellidos:</strong> {{ solicitudPqrSeleccionada.apellido }}</p>
-                        <p><strong style="color: #734a4a;">Tipo Documento:</strong> {{ solicitudPqrSeleccionada.tipoDocumento }}</p>
-                        <p><strong style="color: #734a4a;">Número Documento:</strong> {{ solicitudPqrSeleccionada.numDocumento }}</p>
-                        <p><strong style="color: #734a4a;">Correo Electrónico:</strong> {{ solicitudPqrSeleccionada.correo
-                            }}</p>
-                        <p><strong style="color: #734a4a;">Teléfono:</strong> {{ solicitudPqrSeleccionada.telefono }}</p>
+                        <p><strong style="color: #734a4a;">Apellidos:</strong> {{ solicitudPqrSeleccionada.apellido }}
+                        </p>
+                        <p><strong style="color: #734a4a;">Tipo Documento:</strong> {{
+                            solicitudPqrSeleccionada.tipoDocumento }}
+                        </p>
+                        <p><strong style="color: #734a4a;">Número Documento:</strong> {{
+                            solicitudPqrSeleccionada.numDocumento
+                        }}</p>
+                        <p><strong style="color: #734a4a;">Correo Electrónico:</strong> {{
+                            solicitudPqrSeleccionada.correo
+                        }}</p>
+                        <p><strong style="color: #734a4a;">Teléfono:</strong> {{ solicitudPqrSeleccionada.telefono }}
+                        </p>
                         <p><strong style="color: #734a4a;">Tipo PQR:</strong> {{ solicitudPqrSeleccionada.tipoPqr }}</p>
                         <p><strong style="color: #734a4a;">Asunto:</strong> {{ solicitudPqrSeleccionada.telefono }}</p>
-                        <p><strong style="color: #734a4a;">Comentario:</strong> {{ solicitudPqrSeleccionada.descripcion }}</p>
+                        <p><strong style="color: #734a4a;">Comentario:</strong> {{ solicitudPqrSeleccionada.descripcion
+                            }}</p>
                         <p><strong style="color: #734a4a;">Enviada el:</strong> {{
                             formatFecha(solicitudPqrSeleccionada.createdAt)
                         }}</p>

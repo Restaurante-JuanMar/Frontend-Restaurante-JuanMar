@@ -209,9 +209,10 @@ onMounted(() => {
 <template>
     <div>
         <div class="container d-flex justify-content-center">
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="col mb-5 mt-5">
-                    <h4 style="color: #734a4a; font-weight:bold; text-align:center">Actualizar Platos Especiales</h4>
+                    <h4 style="color: #734a4a; font-weight:bold; text-align:center">Actualizar Platos Especiales
+                    </h4>
                 </div>
                 <form action="" class="row" method="post" @submit.prevent="guardarCambios">
                     <div class="mb-3">
@@ -236,7 +237,8 @@ onMounted(() => {
                         <input class="form-control" type="file" id="ImagenMenu" @change="subirFotoPlatoEspecial"
                             accept="image/*" style="border: 1px solid #734a4a; color:#734a4a;"
                             aria-describedby="NotaExtensionImg">
-                        <span id="NotaExtensionImg" style="font-weight: bold; color:#734a4a; font-size:small">La imagen
+                        <span id="NotaExtensionImg" style="font-weight: bold; color:#734a4a; font-size:small">La
+                            imagen
                             debe pesar como máximo 10MB</span>
                     </div>
                     <div class="mt-2 mb-3">
@@ -248,51 +250,53 @@ onMounted(() => {
                     </div>
                 </form>
 
-                <table class="table table-striped table-hover mt-4">
-                    <thead>
-                        <tr style="text-align: center;">
-                            <th scope="col" style="color: #734a4a;">Nombre</th>
-                            <th scope="col" style="color: #734a4a;">Descripción</th>
-                            <th scope="col" style="color: #734a4a;">Imagen</th>
-                            <th scope="col" style="color: #734a4a;">Estado</th>
-                            <th scope="col" style="color: #734a4a;">Editar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-center" v-for="pe in platosEspeciales" :key="pe._id">
-                            <td>{{ pe.nombre_plat }}</td>
-                            <td class="mensaje">
-                                <VMenu v-if="pe.descrip_plat" class="vmenu">
-                                    <span class="mensaje" style="color: #734a4a;">
-                                        {{ pe.descrip_plat.slice(0, 40) }}...
-                                    </span>
-                                    <template #popper>
-                                        <div class="mensajeVmenu">{{ pe.descrip_plat }}</div>
-                                    </template>
-                                </VMenu>
-                                <span v-else style="color: #734a4a;">No aplica</span>
-                            </td>
-                            <td>
-                                <img :src="pe.imagen" width="100%" height="100px" alt="Plato Especial"
-                                    style="cursor: pointer;" @click="mostrarImagenEnModal(pe)">
-                            </td>
-                            <td>
-                                <button :class="['btn', pe.estado ? 'btn-success' : 'btn-danger']"
-                                    @click="cambiarEstadoPlatoEspecial(pe)"
-                                    style="margin-left: 10px; font-weight: bold;" :disabled="pe.loadingActInac">
-                                    <span v-if="pe.loadingActInac" class="spinner-border spinner-border-sm"
-                                        role="status" aria-hidden="true"></span>
-                                    <span v-if="!pe.loadingActInac"> {{ pe.estado ? 'Activo' : 'Inactivo' }}</span>
-                                </button>
-                            </td>
-                            <td>
-                                <button type="button" id="aceptar" class="btn" @click="cargarDatosPE(pe)"
-                                    style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;"><i
-                                        class="bi bi-pencil-square"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive mt-4">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr style="text-align: center;">
+                                <th scope="col" style="color: #734a4a;">Nombre</th>
+                                <th scope="col" style="color: #734a4a;">Descripción</th>
+                                <th scope="col" style="color: #734a4a;">Imagen</th>
+                                <th scope="col" style="color: #734a4a;">Estado</th>
+                                <th scope="col" style="color: #734a4a;">Editar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" v-for="pe in platosEspeciales" :key="pe._id">
+                                <td>{{ pe.nombre_plat }}</td>
+                                <td class="mensaje">
+                                    <VMenu v-if="pe.descrip_plat" class="vmenu">
+                                        <span class="mensaje" style="color: #734a4a;">
+                                            {{ pe.descrip_plat.slice(0, 40) }}...
+                                        </span>
+                                        <template #popper>
+                                            <div class="mensajeVmenu">{{ pe.descrip_plat }}</div>
+                                        </template>
+                                    </VMenu>
+                                    <span v-else style="color: #734a4a;">No aplica</span>
+                                </td>
+                                <td>
+                                    <img :src="pe.imagen" width="100%" height="100px" alt="Plato Especial"
+                                        style="cursor: pointer;" @click="mostrarImagenEnModal(pe)">
+                                </td>
+                                <td>
+                                    <button :class="['btn', pe.estado ? 'btn-success' : 'btn-danger']"
+                                        @click="cambiarEstadoPlatoEspecial(pe)"
+                                        style="margin-left: 10px; font-weight: bold;" :disabled="pe.loadingActInac">
+                                        <span v-if="pe.loadingActInac" class="spinner-border spinner-border-sm"
+                                            role="status" aria-hidden="true"></span>
+                                        <span v-if="!pe.loadingActInac"> {{ pe.estado ? 'Activo' : 'Inactivo' }}</span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button" id="aceptar" class="btn" @click="cargarDatosPE(pe)"
+                                        style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;"><i
+                                            class="bi bi-pencil-square"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

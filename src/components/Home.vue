@@ -339,22 +339,23 @@ onBeforeUnmount(() => {
                         </h5>
                         <button class="btn-close" @click="mostrarModalEspecial = false"></button>
                     </div>
-                    <div class="modal-body d-flex position-relative">
+                    <div
+                        class="modal-body d-flex flex-wrap flex-md-row flex-column align-items-center position-relative">
                         <!-- Flecha izquierda (anterior) -->
                         <button v-if="platoEspecial.length > 1" class="carousel-control-prev modal-arrow" type="button"
-                            @click="anteriorPlato" style="left: -30px;">
+                            @click="anteriorPlato">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
 
                         <!-- Imagen del Plato Especial -->
-                        <div class="col-md-6" style="display: flex; align-items: center; max-height: 100vh">
+                        <div class="col-md-6 col-12 order-md-1 order-1 d-flex justify-content-center">
                             <img :src="platoEspecial[currentPlatoIndex].imagen" class="img-fluid"
                                 alt="Imagen del Plato Especial" style="border-radius: 10px; max-height: 80vh;">
                         </div>
 
                         <!-- Información del Plato Especial -->
-                        <div class="col-md-6 d-flex flex-column justify-content-center p-4">
+                        <div class="col-md-6 col-12 order-md-2 order-2 d-flex flex-column justify-content-center p-4">
                             <h5 class="modal-title text-uppercase fw-bold" id="modalPlatoEspecialLabel"
                                 style="color: #734a4a;">
                                 {{ platoEspecial[currentPlatoIndex].nombre_plat }}
@@ -367,7 +368,7 @@ onBeforeUnmount(() => {
 
                         <!-- Flecha derecha (siguiente) -->
                         <button v-if="platoEspecial.length > 1" class="carousel-control-next modal-arrow" type="button"
-                            @click="siguientePlato" style="right: -30px;">
+                            @click="siguientePlato">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -391,18 +392,49 @@ onBeforeUnmount(() => {
 
 .modal-arrow {
     position: absolute;
-    top: 50%;
+    top: 53%;
+    /* Centra verticalmente */
     transform: translateY(-50%);
-    background-color: transparent;
+    /* Asegura el centrado exacto */
+    z-index: 1050;
+    /* Mantén las flechas sobre el contenido */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo semitransparente para mejor visibilidad */
     border: none;
-    outline: none;
+    padding: 8px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Cambiar el color de las flechas de navegación a negro */
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: black;
-    filter: invert(1);
-    /* Esto asegurará que el ícono sea visible en todos los navegadores */
+.modal-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-control-prev {
+    left: 15px;
+}
+
+.carousel-control-next {
+    right: 15px;
+}
+
+/* Responsividad */
+@media (max-width: 576px) {
+    .modal-arrow {
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        top: 45%;
+    }
+    .carousel-control-prev {
+        left: 10px;
+    }
+    .carousel-control-next {
+        right: 10px;
+    }
 }
 </style>

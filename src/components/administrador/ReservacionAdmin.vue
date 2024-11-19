@@ -291,20 +291,22 @@ onMounted(() => {
                         </tr>
                     </tbody>
                 </table>
+            </div>
 
-                <div v-if="limit < reservas.length" class="text-center my-3">
-                    <button @click="verMas" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver más
-                        reservas</button>
-                </div>
-                <!--Reservas aceptadas-->
-                <h4 style="color: #734a4a; font-weight: bold; text-align: center;" class="mt-5 mb-3">Reservas
-                    Confirmadas</h4>
-                <form class="d-flex mb-3" role="search">
-                    <input class="form-control me-2" style="border: 1px solid #734a4a;" type="search"
-                        v-model="filterConf" placeholder="Buscar por nombre" aria-label="Search">
-                    <button class="btn" type="submit"
-                        style="background-color: #734a4a; color:#fdfefe; font-weight:bold">Buscar</button>
-                </form>
+            <div v-if="limit < reservas.length" class="text-center my-3">
+                <button @click="verMas" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver más
+                    reservas</button>
+            </div>
+            <!--Reservas aceptadas-->
+            <h4 style="color: #734a4a; font-weight: bold; text-align: center;" class="mt-5 mb-3">Reservas
+                Confirmadas</h4>
+            <form class="d-flex mb-3" role="search">
+                <input class="form-control me-2" style="border: 1px solid #734a4a;" type="search" v-model="filterConf"
+                    placeholder="Buscar por nombre" aria-label="Search">
+                <button class="btn" type="submit"
+                    style="background-color: #734a4a; color:#fdfefe; font-weight:bold">Buscar</button>
+            </form>
+            <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr style="text-align: center;">
@@ -352,57 +354,60 @@ onMounted(() => {
                         </tr>
                     </tbody>
                 </table>
-
-                <div v-if="limitConf < reservasConfirmadas.length" class="text-center my-3">
-                    <button @click="verMasConf" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver
-                        más
-                        reservas confirmadas</button>
-                </div>
-                <!--Listado de Platos-->
-                <h4 style="color: #734a4a; font-weight: bold; text-align: center;" class="mt-5 mb-3">Listado de Platos
-                </h4>
-                <form class="d-flex mb-3" role="search">
-                    <input class="form-control me-2" style="border: 1px solid #734a4a;" type="search"
-                        v-model="filterListP" placeholder="Buscar por nombre" aria-label="Search">
-                    <button class="btn" type="submit"
-                        style="background-color: #734a4a; color:#fdfefe; font-weight:bold">Buscar</button>
-                </form>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr style="text-align: center;">
-                            <th scope="col" style="color: #734a4a;">Numero de Ticket</th>
-                            <th scope="col" style="color: #734a4a;">Nombre</th>
-                            <th scope="col" style="color: #734a4a;">Apellidos</th>
-                            <th scope="col" style="color: #734a4a;">Archivo</th>
-                            <th scope="col" style="color: #734a4a;">Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        <tr v-for="lp in listadoPlatoFiltradoLimitado" :key="lp._id">
-                            <td style="color: #734a4a;">{{ lp.idReserva.identificador }}</td>
-                            <td style="color: #734a4a;">{{ lp.idReserva.nombre_cliente }}</td>
-                            <td style="color: #734a4a;">{{ lp.idReserva.apellido_cliente }}</td>
-                            <td>
-                                <a style="color: #734a4a; font-weight: bold;" :href="lp.archivoUrl" target="_blank"
-                                    download="CARTA_Juanmar_2024.pdf">
-                                    Archivo.pdf
-                                </a>
-                            </td>
-                            <td>
-                                <button type="button" id="aceptar" class="btn" @click="inactivarListadoPlato(lp._id)"
-                                    style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;"><i
-                                        class="bi bi-x-circle-fill"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div v-if="limitLisP < listadoPlato.length" class="text-center my-3">
-                    <button @click="verMasLisP" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver
-                        más
-                        listados</button>
-                </div>
             </div>
+
+            <div v-if="limitConf < reservasConfirmadas.length" class="text-center my-3">
+                <button @click="verMasConf" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver
+                    más
+                    reservas confirmadas</button>
+            </div>
+            <!--Listado de Platos-->
+            <h4 style="color: #734a4a; font-weight: bold; text-align: center;" class="mt-5 mb-3">Listado de Platos
+            </h4>
+            <form class="d-flex mb-3" role="search">
+                <input class="form-control me-2" style="border: 1px solid #734a4a;" type="search" v-model="filterListP"
+                    placeholder="Buscar por nombre" aria-label="Search">
+                <button class="btn" type="submit"
+                    style="background-color: #734a4a; color:#fdfefe; font-weight:bold">Buscar</button>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th scope="col" style="color: #734a4a;">Numero de Ticket</th>
+                        <th scope="col" style="color: #734a4a;">Nombre</th>
+                        <th scope="col" style="color: #734a4a;">Apellidos</th>
+                        <th scope="col" style="color: #734a4a;">Archivo</th>
+                        <th scope="col" style="color: #734a4a;">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr v-for="lp in listadoPlatoFiltradoLimitado" :key="lp._id">
+                        <td style="color: #734a4a;">{{ lp.idReserva.identificador }}</td>
+                        <td style="color: #734a4a;">{{ lp.idReserva.nombre_cliente }}</td>
+                        <td style="color: #734a4a;">{{ lp.idReserva.apellido_cliente }}</td>
+                        <td>
+                            <a style="color: #734a4a; font-weight: bold;" :href="lp.archivoUrl" target="_blank"
+                                download="CARTA_Juanmar_2024.pdf">
+                                Archivo.pdf
+                            </a>
+                        </td>
+                        <td>
+                            <button type="button" id="aceptar" class="btn" @click="inactivarListadoPlato(lp._id)"
+                                style="background-color: #734a4a; color: #fdfefe; border-radius: 4px; font-weight: bold;"><i
+                                    class="bi bi-x-circle-fill"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+            <div v-if="limitLisP < listadoPlato.length" class="text-center my-3">
+                <button @click="verMasLisP" class="btn fw-bold" style="background-color: #fe6f61; color: white;">Ver
+                    más
+                    listados</button>
+            </div>
+
         </div>
         <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalDetalleLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -425,7 +430,7 @@ onMounted(() => {
                                     reservaSeleccionada.telefono_cliente2 }}</p>
                         <p><strong style="color: #734a4a;">Fecha Reserva:</strong> {{
                             formatFecha(reservaSeleccionada.fecha_res)
-                            }}
+                        }}
                         </p>
                         <p v-if="reservaSeleccionada.identificador"><strong style="color: #734a4a;">Número
                                 Ticket:</strong> {{
@@ -436,7 +441,7 @@ onMounted(() => {
                         </p>
                         <p><strong style="color: #734a4a;">Enviada el:</strong> {{
                             formatFechaDetalle(reservaSeleccionada.createdAt)
-                            }}</p>
+                        }}</p>
                     </div>
                 </div>
             </div>
@@ -453,7 +458,6 @@ onMounted(() => {
             role="alert">
             {{ mensajeCargando }}
         </div>
-
     </div>
 </template>
 
