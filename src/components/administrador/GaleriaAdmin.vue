@@ -239,7 +239,16 @@ onMounted(() => {
                                 style="border-color:#734a4a; color:#734a4a; font-weight:bold;">
                                 <option value="1">Posición 1</option>
                                 <option value="2">Posición 2</option>
-                                <!-- Agrega las demás opciones aquí -->
+                                <option value="3">Posición 3</option>
+                                <option value="4">Posición 4</option>
+                                <option value="5">Posición 5</option>
+                                <option value="6">Posición 6</option>
+                                <option value="7">Posición 7</option>
+                                <option value="8">Posición 8</option>
+                                <option value="9">Posición 9</option>
+                                <option value="10">Posición 10</option>
+                                <option value="11">Posición 11</option>
+                                <option value="12">Posición 12</option>
                             </select>
                         </div>
                         <div class="col-12">

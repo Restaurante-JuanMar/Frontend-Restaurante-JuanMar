@@ -337,8 +337,8 @@ const logout = () => {
         <footer v-if="!useUsuario.token" class="text-center text-lg-starte" style="background-color: #fe6f61;">
             <div class="container p-3">
                 <form class="row">
-                    <div class="col-lg-4 col-md-12 md-12 md-4 mb-0">
-                        <h6 style="color: #fdfefe; font-weight: bold; margin: 5px;">Siganos en Nuestra Redes</h6>
+                    <div class="col-lg-4 col-md-12 md-12 md-4 mb-0" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <h6 style="color: #fdfefe; font-weight: bold; margin: 5px;">Siguenos en Nuestras Redes</h6>
                         <div
                             style="display: flex; justify-content: center; align-items: center; height: 100px; gap: 10px;">
                             <a style="color: #fdfefe; font-size: 30px;"
@@ -350,31 +350,30 @@ const logout = () => {
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 md-12 md-4 mb-md-0"
-                        style="display: flex; justify-content: center; align-items: center;">
+                        style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
                         <img :src="LogoSinFondo" alt="Restaurante JuanMar">
+                        <div class="text-center">
+                    <p style="color: #fdfefe; font-size: smaller; font-weight: bolder;">© 2024 Copyright: Restaurante
+                        JuanMar</p>
+                </div>
                     </div>
                     <div class="col-lg-4 col-md-12 md-12 md-4 mb-0">
                         <h6 style="color: #fdfefe; font-weight: bold; margin: 5px;">Contacto</h6>
                         <a style="color: #fdfefe; font-size: 30px; text-decoration: none;"
-                            href="https://wa.me/3022654186" target="_blank" class="whatsapp-button"><i
+                            href="https://wa.me/+573022654186" target="_blank" class="whatsapp-button"><i
                                 class="bi bi-whatsapp"></i></a>
-                        <a style="color: #fdfefe; font-size: 30px; text-decoration: none;"
-                            href="https://wa.me/3228008473" target="_blank" class="whatsapp-button"><i
-                                class="bi bi-whatsapp"></i></a>
+                        <p style="color: #fdfefe; font-weight: bold;"><i class="bi bi-telephone" style="font-size: 20px;"></i>
+                            3228008473</p>
                         <p style="color: #fdfefe; font-size: 30px;"><i class="bi bi-envelope-at-fill"></i></p>
                         <p style="color: #fdfefe; font-weight: bold; position: relative; bottom: 20px;">
                             juanmarrestaurantesocorro@gmail.com</p>
                     </div>
                 </form>
-                <div class="text-center">
-                    <p style="color: #fdfefe; font-size: smaller; font-weight: bolder;">© 2024 Copyright: Restaurante
-                        JuanMar</p>
-                </div>
             </div>
         </footer>
 
         <!-- Footer fijo en la parte inferior de la pantalla -->
-        
+
     </div>
 </template>
 
